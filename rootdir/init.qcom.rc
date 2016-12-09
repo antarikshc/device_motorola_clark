@@ -207,6 +207,9 @@ on post-fs
     chmod 0660 /sys/class/capsense/fw_update
     chmod 0660 /sys/class/capsense/reset
 
+    # Wifi firmware reload path
+    chown wifi wifi /sys/module/wlan/parameters/fwpath
+
 on post-fs-data
     # Setup correct permissions for dbvc and atvc
     mkdir /pds/public/atvc 0770 mot_atvc shell
