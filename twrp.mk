@@ -1,6 +1,7 @@
 PRODUCT_COPY_FILES += \
     device/motorola/clark/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab \
     vendor/motorola/clark/proprietary/vendor/lib64/hw/keystore.msm8992.so:recovery/root/vendor/lib64/hw/keystore.msm8992.so \
+    vendor/motorola/clark/proprietary/lib64/hw/keystore.qcom.so:recovery/root/vendor/lib64/hw/keystore.qcom.so \
     vendor/motorola/clark/proprietary/vendor/lib64/libQSEEComAPI.so:recovery/root/vendor/lib64/libQSEEComAPI.so \
     vendor/motorola/clark/proprietary/vendor/lib64/libdiag.so:recovery/root/vendor/lib64/libdiag.so \
     vendor/motorola/clark/proprietary/vendor/lib64/libdrmfs.so:recovery/root/vendor/lib64/libdrmfs.so \
