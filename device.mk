@@ -150,7 +150,7 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.msm8992
+    android.hardware.light@2.0-service.clark
 
 # Media
 PRODUCT_PACKAGES += \
@@ -280,3 +280,4 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
     wificond \
     wifilogd
+
