@@ -172,6 +172,11 @@ on boot
     symlink /firmware/image/modem_pr/mbn_ota /data/misc/radio/modem_config
     write /data/misc/radio/copy_complete 1
 
+    # use qcril.db to handle Ecc and load MBN
+    copy /system/vendor/qcril.db /data/misc/radio/qcril.db
+    chown radio radio /data/misc/radio/qcril.db
+    chmod 0600 /data/misc/radio/qcril.db
+
     # File flags for prebuilt ril db file
     write /data/misc/radio/prebuilt_db_support 1
     chown radio radio /data/misc/radio/prebuilt_db_support
