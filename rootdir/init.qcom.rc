@@ -239,7 +239,10 @@ on post-fs-data
     # Create PERFD deamon related dirs
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd
-    rm /data/system/perfd/default_values
+    rm /data/system/perfd/default_values 
+    mkdir /data/misc/perfd 0755 root system
+    chmod 2755 /data/misc/perfd
+    rm /data/misc/perfd/default_values
 
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
