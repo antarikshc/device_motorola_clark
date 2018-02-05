@@ -22,5 +22,8 @@
 #define BTA_DISABLE_DELAY 1000 /* in milliseconds */
 #define BLUETOOTH_QTI_SW TRUE
 #define BLE_VND_INCLUDED   TRUE
+#define MAX_ACL_CONNECTIONS   7
+#define MAX_L2CAP_CHANNELS    16
+#define BT_CLEAN_TURN_ON_DISABLED TRUE
 
 #endif
