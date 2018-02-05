@@ -504,7 +504,7 @@ service batt_health /system/bin/batt_health
 service charger /charger
     class charger
     group log
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
     writepid /dev/cpuset/system-background/tasks
 
 service motosh /system/bin/motosh boot
