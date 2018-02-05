@@ -244,7 +244,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermanager.xml:system/etc/thermanager.xml
 
 PRODUCT_PACKAGES += \
-    thermanager
+    thermanager \
+    android.hardware.thermal@1.0-impl
 
 # Wifi
 PRODUCT_COPY_FILES += \
