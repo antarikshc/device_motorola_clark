@@ -628,3 +628,6 @@ vendor/lib64/libTimeService.so
 
 # Wat - weird files
 bin/ssr_setup
+
+# QCOM Permission
+etc/permissions/qti_permissions.xml
