@@ -63,7 +63,9 @@ PRODUCT_PACKAGES += \
     libmmcamera_interface \
     libmmjpeg_interface \
     mm-qcamera-app \
-    Snap
+    Snap \
+    android.hardware.camera.provider@2.4-impl \
+    camera.device@1.0-impl
 
 # CMActions
 PRODUCT_PACKAGES += \
