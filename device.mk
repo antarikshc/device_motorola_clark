@@ -233,6 +233,10 @@ PRODUCT_PACKAGES += \
     libshim_ril \
     libxml2
 
+# RIL
+PRODUCT_PACKAGES += \
+    rild_socket
+
 # Sensors
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sensor_def_qcomdev.conf:system/etc/sensors/sensor_def_qcomdev.conf \
