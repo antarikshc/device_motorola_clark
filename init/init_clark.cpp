@@ -32,10 +32,12 @@
 #define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
 #include <sys/_system_properties.h>
 
-#include "vendor_init.h"
+#include <android-base/properties.h>
 #include "property_service.h"
-#include "log.h"
-#include "util.h"
+#include "vendor_init.h"
+
+using android::base::GetProperty;
+using android::init::property_set;
 
 static void setSsim(void);
 static void setMsim(void);
@@ -57,12 +59,12 @@ void vendor_load_properties()
     std::string sku;
     std::string car;
 
-    platform = property_get("ro.board.platform");
+    platform = GetProperty("ro.board.platform", "");
     if (platform != ANDROID_TARGET)
         return;
 
-    sku = property_get("ro.boot.hardware.sku");
-    car = property_get("ro.boot.carrier");
+    sku = GetProperty("ro.boot.hardware.sku", "");
+    car = GetProperty("ro.boot.carrier", "");
 
     property_override("ro.product.model", sku.c_str());
     property_override("ro.build.product", "clark");
@@ -76,8 +78,8 @@ void vendor_load_properties()
         if (car == "retin") {
             /* India */
             setMsim();
-            property_override("ro.build.description", "clark_retasia_ds-user 6.0 MPH24.49-18 18 release-keys");
-            property_override("ro.build.fingerprint", "motorola/clark_retasia_ds/clark_ds:6.0/MPH24.49-18/18:user/release-keys");
+            property_override("ro.build.description", "clark_retasia_ds-user 7.0 NPHS25.200-15-3 3 release-keys");
+            property_override("ro.build.fingerprint", "motorola/clark_retasia_ds/clark_ds:7.0/NPHS25.200-15-3/3:user/release-keys");
         }
         else if (car == "retbr") {
             /* Brazil */
