@@ -119,6 +119,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl
 
+# HIDL
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/manifest.xml:system/vendor/manifest.xml \
+    $(LOCAL_PATH)/configs/compatibility_matrix.xml:system/vendor/compatibility_matrix.xml
+
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
