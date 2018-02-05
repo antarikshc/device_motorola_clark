@@ -139,11 +139,6 @@ PRODUCT_SYSTEM_PROPERTY_BLACKLIST := \
     ro.product.model \
     ro.product.name
 
-# IPA Manager
-PRODUCT_PACKAGES += \
-    ipacm \
-    IPACM_cfg.xml
-
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl
