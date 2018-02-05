@@ -2,21 +2,8 @@ import init.mmi.usb.rc
 import init.qcom.power.rc
 
 on early-init
-    write /sys/block/zram0/comp_algorithm lz4
-    write /sys/block/zram0/max_comp_streams 4
 
     mount debugfs debugfs /sys/kernel/debug
-
-on init
-    export LD_SHIM_LIBS "/system/vendor/lib64/lib-imsvt.so|libshims_ims.so:/system/lib64/libandroid.so|libshim_ril.so:/system/vendor/lib64/libril-qc-qmi-1.so|rild_socket.so:/system/vendor/lib64/libizat_core.so|libshims_get_process_name.so"
-
-    write /proc/sys/vm/page-cluster 0
-
-    chown system log /sys/fs/pstore/annotate-ramoops
-    chmod 0640 /sys/fs/pstore/annotate-ramoops
-
-    # ESDFS
-    chown oem_5016 root /proc/fs/esdfs/packages
 
     # Set permissions for partitions
     mkdir /persist 0771 system system
@@ -28,6 +15,21 @@ on init
     symlink /data/tombstones /tombstones
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
+
+    # Setup ZRAM options
+    write /sys/block/zram0/comp_algorithm lz4
+    write /sys/block/zram0/max_comp_streams 4
+
+on init
+    export LD_SHIM_LIBS "/system/vendor/lib64/lib-imsvt.so|libshims_ims.so:/system/lib64/libandroid.so|libshim_ril.so:/system/vendor/lib64/libril-qc-qmi-1.so|rild_socket.so:/system/vendor/lib64/libizat_core.so|libshims_get_process_name.so"
+
+    write /proc/sys/vm/page-cluster 0
+
+    chown system log /sys/fs/pstore/annotate-ramoops
+    chmod 0640 /sys/fs/pstore/annotate-ramoops
+
+    # ESDFS
+    chown oem_5016 root /proc/fs/esdfs/packages
 
 on fs
     symlink /dev/block/platform/soc.0/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -72,6 +74,15 @@ on boot
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/system-background/cpus 0-2
     write /dev/cpuset/top-app/cpus 0-5
+
+    # add a cpuset for the camera daemon
+    # we want all the little cores for camera
+    mkdir /dev/cpuset/camera-daemon
+    write /dev/cpuset/camera-daemon/cpus 0-3
+    write /dev/cpuset/camera-daemon/mems 0
+    chown system system /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/camera-daemon/tasks
+    chmod 0664 /dev/cpuset/camera-daemon/tasks
 
     # motosh irq_disable parameter permissions
     chown root oem_5004 /sys/module/motosh/parameters/irq_disable
@@ -139,6 +150,9 @@ on boot
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
 
+    # Wifi firmware reload path
+    chown wifi wifi /sys/module/wlan/parameters/fwpath
+
     # NFC local data and nfcee xml storage
     mkdir /data/nfc 0770 nfc nfc
     mkdir /data/nfc/param 0770 nfc nfc
@@ -147,6 +161,7 @@ on boot
     chown system system /sys/module/ccid_bridge/parameters/bulk_msg_timeout
 
     # Mark the copy complete flag to not completed
+    mkdir /data/misc/radio 0770 radio radio
     write /data/misc/radio/copy_complete 0
     chown radio radio /data/misc/radio/copy_complete
     chmod 0660 /data/misc/radio/copy_complete
@@ -209,9 +224,6 @@ on post-fs
     chmod 0660 /sys/class/capsense/fw_update
     chmod 0660 /sys/class/capsense/reset
 
-    # Wifi firmware reload path
-    chown wifi wifi /sys/module/wlan/parameters/fwpath
-
 on post-fs-data
     # Setup correct permissions for dbvc and atvc
     mkdir /pds/public/atvc 0770 oem_5012 shell
@@ -268,6 +280,17 @@ on post-fs-data
     mkdir /data/misc/camera 0770 camera camera
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+    mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
+
+    # Create folder for mm-qcamera-daemon
+    mkdir /data/camera 0770 media camera
+
+    # Setup folder for camera HAL subsystem
+    mkdir /data/camera_dump 0750 media media
 
     # Create directory's for various items
     mkdir /data/power_supply_logger 0750 oem_5001 log
@@ -481,14 +504,14 @@ service atvc_core /system/bin/dbvc_atvc_property_set
     class core
     user oem_5012
     seclabel u:r:atvc:s0
-    group oem_5007
+    group oem_5012
     oneshot
 
 service atvc /system/bin/dbvc_atvc_property_set
     class late_start
     user oem_5012
     seclabel u:r:atvc:s0
-    group oem_5007
+    group oem_5012
     oneshot
 
 service msm_irqbalance /system/bin/msm_irqbalance -f /system/etc/msm_irqbalance.conf
@@ -561,13 +584,13 @@ service imsqmidaemon /system/bin/imsqmidaemon
     class main
     user system
     socket ims_qmid stream 0660 system radio
-    group radio log diag
+    group radio log diag net_raw
 
 service imsdatadaemon /system/bin/imsdatadaemon
     class main
     user system
     socket ims_datad stream 0660 system radio
-    group system wifi radio inet log diag
+    group system wifi radio inet log diag net_raw net_admin
     disabled
 
 on property:sys.ims.QMI_DAEMON_STATUS=1
