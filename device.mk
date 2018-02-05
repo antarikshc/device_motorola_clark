@@ -37,7 +37,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml
 
 PRODUCT_PACKAGES += \
-    audio_policy.msm8992 \
     audio.a2dp.default \
     audio.primary.msm8992 \
     audio.r_submix.default \
@@ -50,7 +49,10 @@ PRODUCT_PACKAGES += \
     libtinyalsa \
     libtinycompress \
     libtinyxml \
-    tinymix
+    tinymix \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.soundtrigger@2.0-impl
 
 # Camera
 PRODUCT_PACKAGES += \
