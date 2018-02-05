@@ -343,21 +343,6 @@ on property:sys.boot_completed=1
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
     write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250
 
-on property:vold.decrypt=trigger_restart_framework
-    start qcom-c_main-sh
-
-on property:init.svc.per_mgr=running
-    start per_proxy
-
-on property:sys.shutdown.requested=*
-    stop per_proxy
-
-on property:persist.radio.atfwd.start=false
-    stop atfwd
-
-on property:radio.atfwd.start=false
-    stop atfwd
-
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
     class main
     user root
@@ -469,6 +454,12 @@ service atfwd /system/bin/ATFWD-daemon
     user system
     group system radio
 
+on property:persist.radio.atfwd.start=false
+    stop atfwd
+
+on property:radio.atfwd.start=false
+    stop atfwd
+
 service ril-daemon2 /vendor/bin/hw/rild -c 2
     class main
     socket rild2 stream 660 root radio
@@ -507,6 +498,12 @@ service per_proxy /system/bin/pm-proxy
     group system net_raw
     disabled
     writepid /dev/cpuset/system-background/tasks
+
+on property:init.svc.per_mgr=running
+    start per_proxy
+
+on property:sys.shutdown.requested=*
+    stop per_proxy
 
 service time_daemon /system/bin/time_daemon
     class main
@@ -591,6 +588,9 @@ service iop /system/bin/iop
     user root
     group root
     writepid /dev/cpuset/system-background/tasks
+
+on property:vold.decrypt=trigger_restart_framework
+    start qcom-c_main-sh
 
 # OSS thermal management
 service thermanager /system/bin/thermanager /system/etc/thermanager.xml
