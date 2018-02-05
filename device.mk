@@ -247,6 +247,10 @@ PRODUCT_PACKAGES += \
     thermanager \
     android.hardware.thermal@1.0-impl
 
+# USB
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0-service
+
 # Wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/hostapd.accept:system/etc/hostapd/hostapd.accept \
