@@ -113,7 +113,8 @@ PRODUCT_PACKAGES += \
     lowi.conf \
     quipc.conf \
     sap.conf \
-    xtwifi.conf
+    xtwifi.conf \
+    android.hardware.gnss@1.0-impl
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
