@@ -35,6 +35,9 @@ bluetooth.hfp.client=1
 qcom.bluetooth.soc=rome
 qcom.bt.le_dev_pwr_class=1
 ro.bluetooth.hfp.ver=1.6
+#Set this true as ROME which is programmed
+#as embedded wipower mode by deafult
+ro.bluetooth.emb_wp_mode=true
 
 # CABL
 ro.qualcomm.cabl=0
