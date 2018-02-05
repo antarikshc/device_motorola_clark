@@ -408,12 +408,6 @@ service ipacm-diag /system/bin/ipacm-diag
     socket ipacm_log_file dgram 660 system net_admin
     group net_admin diag
 
-service ipacm /system/bin/ipacm
-    class main
-    user net_admin
-    group net_admin inet
-    writepid /dev/cpuset/system-background/tasks
-
 service qti /system/vendor/bin/qti
     class main
     user radio
@@ -437,18 +431,6 @@ service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
     disabled
     oneshot
 
-service gpsone_daemon /system/bin/gpsone_daemon
-    class late_start
-    user gps
-    group gps inet net_raw
-    disabled
-
-service location_mq /system/bin/location-mq
-    class late_start
-    user gps
-    group gps
-    disabled
-
 service atfwd /system/bin/ATFWD-daemon
     class late_start
     user system
@@ -467,12 +449,6 @@ service ril-daemon2 /vendor/bin/hw/rild -c 2
     user radio
     group radio cache inet misc audio sdcard_r sdcard_rw diag oem_2950 log
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
-
-service rild2-wrapper /system/bin/sh /system/etc/init.qcom.ril.sh
-    class late_start
-    user root
-    group root
-    oneshot
 
 service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
@@ -583,49 +559,6 @@ service perfd /system/vendor/bin/perfd
     socket perfd seqpacket 0666 root system
     writepid /dev/cpuset/system-background/tasks
 
-service iop /system/bin/iop
-    class main
-    user root
-    group root
-    writepid /dev/cpuset/system-background/tasks
-
 on property:vold.decrypt=trigger_restart_framework
     start qcom-c_main-sh
 
-# OSS thermal management
-service thermanager /system/bin/thermanager /system/etc/thermanager.xml
-    class late_start
-    user root
-    group root
-    writepid /dev/cpuset/system-background/tasks
-
-service imsqmidaemon /system/bin/imsqmidaemon
-    class main
-    user system
-    socket ims_qmid stream 0660 system radio
-    group radio log diag net_raw
-
-service imsdatadaemon /system/bin/imsdatadaemon
-    class main
-    user system
-    socket ims_datad stream 0660 system radio
-    group system wifi radio inet log diag net_raw net_admin
-    disabled
-
-on property:sys.ims.QMI_DAEMON_STATUS=1
-    start imsdatadaemon
-
-service ims_rtp_daemon /system/bin/ims_rtp_daemon
-   class main
-   user system
-   socket ims_rtpd stream 0660 system radio
-   group radio diag inet log
-   disabled
-
-on property:sys.ims.DATA_DAEMON_STATUS=1
-    start ims_rtp_daemon
-
-service imscmservice /system/bin/imscmservice
-   class main
-   user system
-   group radio diag inet log
