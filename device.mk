@@ -81,11 +81,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     hwcomposer.msm8992 \
     gralloc.msm8992 \
-    copybit.msm8992 \
     memtrack.msm8992 \
-    liboverlay \
-    libqdutils \
-    libqdMetaData
+    libgenlock \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.allocator@2.0-service \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.memtrack@1.0-impl \
+    android.hardware.renderscript@1.0-impl
 
 # Firmware extraction script
 PRODUCT_COPY_FILES += \
