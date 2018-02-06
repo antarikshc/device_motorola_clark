@@ -1,0 +1,26 @@
+[
+  {
+    "remote":      "github",
+    "repository":  "antarikshc/kernel_motorola_msm8992",
+    "target_path": "kernel/motorola/msm8992",
+    "branch":      "lineage-15.1"
+  },
+  {
+    "remote":      "github",
+    "repository":  "LineageOS/android_hardware_sony_thermanager",
+    "target_path": "hardware/sony/thermanager",
+    "branch":      "staging/lineage-15.1"
+  },
+  {
+    "remote":      "github",
+    "repository":  "LineageOS/android_packages_resources_devicesettings",
+    "target_path": "packages/resources/devicesettings",
+    "branch":      "staging/lineage-15.1"
+  },
+  {
+    "remote":      "github",
+    "repository":  "antarikshc/proprietary_vendor_motorola",
+    "target_path": "vendor/motorola",
+    "branch":      "lineage-15.1_wrap"
+  }
+]
