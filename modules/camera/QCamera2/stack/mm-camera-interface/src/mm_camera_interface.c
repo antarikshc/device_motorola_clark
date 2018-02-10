@@ -45,6 +45,8 @@
 #include "mm_camera_sock.h"
 #include "mm_camera.h"
 
+#define EXTRA_ENTRY 6
+
 static pthread_mutex_t g_intf_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static mm_camera_ctrl_t g_cam_ctrl = {0, {{0}}, {0}, {{0}}};
@@ -1509,6 +1511,7 @@ void sort_camera_info(int num_cam)
 uint8_t get_num_of_cameras()
 {
     int rc = 0;
+    int retanx = 0;
     int dev_fd = -1;
     struct media_device_info mdev_info;
     int num_media_devices = 0;
@@ -1603,7 +1606,15 @@ uint8_t get_num_of_cameras()
     cfg.cfgtype = CFG_SINIT_PROBE_WAIT_DONE;
     cfg.cfg.setting = NULL;
     if (ioctl(sd_fd, VIDIOC_MSM_SENSOR_INIT_CFG, &cfg) < 0) {
-        CDBG_ERROR("failed");
+        CDBG("Failed! Camera Daemon may not up so try again");
+        for(retanx = 0; retanx < (MM_CAMERA_EVT_ENTRY_MAX + EXTRA_ENTRY); retanx++) {
+            if (ioctl(sd_fd, VIDIOC_MSM_SENSOR_INIT_CFG, &cfg) < 0) {
+                CDBG("Failed! Camera Daemon may not up so try again");
+                continue;
+            }
+            else
+                break;
+        }
     }
     close(sd_fd);
     dev_fd = -1;
