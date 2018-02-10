@@ -62,6 +62,8 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
+    android.hardware.camera.provider@2.4-impl \
+    camera.device@1.0-impl
     camera.msm8992 \
     libcamera \
     libqomx_core \
@@ -69,8 +71,7 @@ PRODUCT_PACKAGES += \
     libmmcamera_interface \
     libmmjpeg_interface \
     Snap \
-    android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl
+    mm-qcamera-app
 
 # CMActions
 PRODUCT_PACKAGES += \
