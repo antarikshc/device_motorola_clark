@@ -6728,7 +6728,7 @@ int32_t QCameraParameters::configFrameCapture(bool commitSettings)
  *==========================================================================*/
 int32_t QCameraParameters::resetFrameCapture(bool commitSettings)
 {
-    int32_t rc = NO_ERROR, i = 0;
+    int32_t rc = NO_ERROR;
     memset(&m_captureFrameConfig, 0, sizeof(cam_capture_frame_config_t));
 
     if (commitSettings) {
@@ -10621,11 +10621,9 @@ int32_t QCameraParameters::commitParamChanges()
  *
  * RETURN     : none
  *==========================================================================*/
-QCameraReprocScaleParam::QCameraReprocScaleParam(QCameraParameters *parent)
-  : mParent(parent),
-    mScaleEnabled(false),
+QCameraReprocScaleParam::QCameraReprocScaleParam(QCameraParameters* /*parent*/)
+  : mScaleEnabled(false),
     mIsUnderScaling(false),
-    mScaleDirection(0),
     mNeedScaleCnt(0),
     mSensorSizeTblCnt(0),
     mSensorSizeTbl(NULL),
