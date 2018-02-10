@@ -57,7 +57,9 @@ LOCAL_C_INCLUDES := \
         system/media/camera/include \
         $(LOCAL_PATH)/../mm-image-codec/qexif \
         $(LOCAL_PATH)/../mm-image-codec/qomx_core \
-        $(LOCAL_PATH)/util
+        $(LOCAL_PATH)/util \
+        $(call include-path-for, android.hidl.token@1.0-utils) \
+        $(call include-path-for, android.hardware.graphics.bufferqueue@1.0)
 
 #HAL 1.0 Include paths
 LOCAL_C_INCLUDES += \
@@ -77,6 +79,7 @@ endif
 LOCAL_SHARED_LIBRARIES := libcamera_client liblog libhardware libutils libcutils libdl libsync
 LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
 LOCAL_SHARED_LIBRARIES += libqdMetaData libstagefrighthw
+LOCAL_SHARED_LIBRARIES += android.hidl.token@1.0-utils android.hardware.graphics.bufferqueue@1.0
 
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE := camera.msm8992
