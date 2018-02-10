@@ -4264,7 +4264,7 @@ template <typename fwkType, class mapType> int lookupHalName(const mapType *arr,
         }
     }
 
-    ALOGE("%s: Cannot find matching hal type fwk_name=%d", __func__, (int)fwk_name);
+    ALOGE("%s: Cannot find matching hal type fwk_name=%d", __func__, (int) fwk_name);
     return NAME_NOT_FOUND;
 }
 
