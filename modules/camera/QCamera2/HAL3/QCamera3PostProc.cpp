@@ -293,7 +293,6 @@ int32_t QCamera3PostProcessor::getFWKJpegEncodeConfig(
         jpeg_settings_t *jpeg_settings)
 {
     CDBG("%s : E", __func__);
-    int32_t ret = NO_ERROR;
 
     if ((NULL == frame) || (NULL == jpeg_settings)) {
         return BAD_VALUE;
@@ -361,10 +360,6 @@ int32_t QCamera3PostProcessor::getFWKJpegEncodeConfig(
 
     CDBG("%s : X", __func__);
     return NO_ERROR;
-
-on_error:
-    CDBG("%s : X with error %d", __func__, ret);
-    return ret;
 }
 
 /*===========================================================================
@@ -525,8 +520,6 @@ int32_t QCamera3PostProcessor::processData(mm_camera_super_buf_t *input) {
 int32_t QCamera3PostProcessor::processData(mm_camera_super_buf_t *input,
         buffer_handle_t *output, uint32_t frameNumber)
 {
-    CDBG("%s: E", __func__);
-    QCamera3HardwareInterface* hal_obj = (QCamera3HardwareInterface*)m_parent->mUserData;
     pthread_mutex_lock(&mReprocJobLock);
 
     // enqueue to post proc input queue
