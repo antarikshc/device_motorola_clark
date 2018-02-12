@@ -43,3 +43,14 @@ LOCAL_SRC_FILES := get_process_name.c
 LOCAL_MODULE := libshims_get_process_name
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
+
+# Camera
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := MediaCodec.cpp
+LOCAL_SHARED_LIBRARIES := libstagefright libmedia
+LOCAL_MODULE := libshims_media
+LOCAL_MODULE_TAGS := optional
+LOCAL_MULTILIB := 32
+LOCAL_PROPRIETARY_MODULE := true
+include $(BUILD_SHARED_LIBRARY)
