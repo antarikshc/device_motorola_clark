@@ -139,6 +139,7 @@ BOARD_USES_QC_TIME_SERVICES := true
 
 # Power
 TARGET_POWERHAL_VARIANT := qcom
+TARGET_USES_INTERACTION_BOOST := true
 
 # Protobuf-c is supported in this build
 PROTOBUF_SUPPORTED := true
