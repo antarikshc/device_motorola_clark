@@ -326,7 +326,7 @@ vendor/lib64/hw/keystore.msm8992.so
 
 # Gatekeeper
 vendor/lib/hw/gatekeeper.msm8992.so
-vendor/lib64/hw/gatekeeper.msm8992.so
+vendor/lib64/hw/gatekeeper.msm8992.so|2d7fecc68ca7fa0ce853c9f4460acfd2b3dc2d13
 
 # Display tuning
 vendor/lib/libmm-als.so
@@ -509,19 +509,19 @@ vendor/lib64/libqcci_legacy.so
 
 # CNE
 -priv-app/CNEService/CNEService.apk
-bin/cnd
+bin/cnd|7ab48aacda61e2ed23c1ea34630590cc4079eee5
 etc/cne/andsfCne.xml
 etc/cne/SwimConfig.xml
 etc/permissions/cneapiclient.xml
 etc/permissions/com.motorola.motosignature.xml
 framework/com.motorola.motosignature.jar
 vendor/lib/libcneapiclient.so
-vendor/lib64/libcneapiclient.so
+vendor/lib64/libcneapiclient.so|5d0b256c43580225ec727f2ccf35c68bbcfbddc0
 vendor/lib/libcneqmiutils.so
 vendor/lib64/libcneqmiutils.so
 vendor/lib/libcne.so
-vendor/lib64/libcne.so
-vendor/lib64/libprotobuf-cpp-lpro.so
+vendor/lib64/libcne.so|a6f512525bc8401ee83bc843918c7230750add35
+vendor/lib64/libprotobuf-cpp-lpro.so|9454e010c1fed255f21b857332960ed829e65fba
 vendor/lib/libvendorconn.so
 vendor/lib64/libvendorconn.so
 vendor/lib/libwqe.so
@@ -581,7 +581,7 @@ vendor/lib/libmdmdetect.so
 vendor/lib64/libmdmdetect.so
 vendor/lib/libnetmgr.so
 vendor/lib64/libnetmgr.so
-vendor/lib64/libprotobuf-cpp-preo.so
+vendor/lib64/libprotobuf-cpp-preo.so|569525c5de7c53398a7691ba6ecc026097b7f973
 vendor/lib/libperipheral_client.so
 vendor/lib64/libperipheral_client.so
 vendor/lib/libril-qc-ltedirectdisc.so
@@ -595,7 +595,7 @@ vendor/lib64/libril-qc-qmi-1.so
 vendor/lib/libril-qcril-hook-oem.so
 vendor/lib64/libril-qcril-hook-oem.so
 vendor/lib/libsettings.so
-vendor/lib64/libsettings.so
+vendor/lib64/libsettings.so|4609cacca0a56dae2596687c8f5f2f9423d4d0d9
 vendor/lib/libxml.so
 vendor/lib64/libxml.so
 vendor/lib64/libqcmaputils.so
