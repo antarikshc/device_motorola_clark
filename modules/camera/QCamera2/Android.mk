@@ -64,7 +64,7 @@ LOCAL_C_INCLUDES := \
 #HAL 1.0 Include paths
 LOCAL_C_INCLUDES += \
         frameworks/native/include/media/hardware \
-        $(LOCAL_PATH)/HAL
+        $(call project-path-for,qcom-camera)/QCamera2/HAL
 
 LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
 LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
@@ -76,8 +76,7 @@ LOCAL_C_INCLUDES += \
 LOCAL_SHARED_LIBRARIES := libcamera_client liblog libhardware libutils libcutils libdl
 LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
 LOCAL_SHARED_LIBRARIES += libqdMetaData libstagefrighthw
-LOCAL_SHARED_LIBRARIES += android.hidl.token@1.0-utils
-LOCAL_SHARED_LIBRARIES += android.hardware.graphics.bufferqueue@1.0
+LOCAL_SHARED_LIBRARIES += android.hidl.token@1.0-utils android.hardware.graphics.bufferqueue@1.0
 
 LOCAL_CLANG := false
 LOCAL_MODULE_RELATIVE_PATH := hw

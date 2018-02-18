@@ -45,11 +45,9 @@
 #include "mm_camera_sock.h"
 #include "mm_camera.h"
 
-#define EXTRA_ENTRY 6
-
 static pthread_mutex_t g_intf_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static mm_camera_ctrl_t g_cam_ctrl = {0, {{0}}, {0}, {{0,0,0,0,0,0,0}}};
+static mm_camera_ctrl_t g_cam_ctrl = {0, {{0}}, {0}, {{0}}};
 
 static pthread_mutex_t g_handler_lock = PTHREAD_MUTEX_INITIALIZER;
 static uint16_t g_handler_history_count = 0; /* history count for handler */
@@ -404,6 +402,7 @@ static int32_t mm_camera_intf_close(uint32_t camera_handle)
 static int32_t mm_camera_intf_error_close(uint32_t camera_handle)
 {
     int32_t rc = -1;
+    uint8_t cam_idx = camera_handle & 0x00ff;
     mm_camera_obj_t * my_obj = NULL;
 
     CDBG("%s E: camera_handler = %d ", __func__, camera_handle);
@@ -1510,7 +1509,6 @@ void sort_camera_info(int num_cam)
 uint8_t get_num_of_cameras()
 {
     int rc = 0;
-    int retanx = 0;
     int dev_fd = -1;
     struct media_device_info mdev_info;
     int num_media_devices = 0;
@@ -1605,15 +1603,7 @@ uint8_t get_num_of_cameras()
     cfg.cfgtype = CFG_SINIT_PROBE_WAIT_DONE;
     cfg.cfg.setting = NULL;
     if (ioctl(sd_fd, VIDIOC_MSM_SENSOR_INIT_CFG, &cfg) < 0) {
-        CDBG("Failed! Camera Daemon may not up so try again");
-        for(retanx = 0; retanx < (MM_CAMERA_EVT_ENTRY_MAX + EXTRA_ENTRY); retanx++) {
-            if (ioctl(sd_fd, VIDIOC_MSM_SENSOR_INIT_CFG, &cfg) < 0) {
-                CDBG("Failed! Camera Daemon may not up so try again");
-                continue;
-            }
-            else
-                break;
-        }
+        CDBG_ERROR("failed");
     }
     close(sd_fd);
     dev_fd = -1;

@@ -38,6 +38,7 @@
 #include <utils/Errors.h>
 #include <utils/Trace.h>
 #include <gralloc_priv.h>
+#include <gui/Surface.h>
 #include <dlfcn.h>
 
 #include "QCamera2HWI.h"
@@ -68,35 +69,35 @@ static pthread_mutex_t g_camlock = PTHREAD_MUTEX_INITIALIZER;
 volatile uint32_t gCamHalLogLevel = 1;
 
 camera_device_ops_t QCamera2HardwareInterface::mCameraOps = {
-    .set_preview_window =         QCamera2HardwareInterface::set_preview_window,
-    .set_callbacks =              QCamera2HardwareInterface::set_CallBacks,
-    .enable_msg_type =           QCamera2HardwareInterface::enable_msg_type,
-    .disable_msg_type =          QCamera2HardwareInterface::disable_msg_type,
-    .msg_type_enabled =          QCamera2HardwareInterface::msg_type_enabled,
+    set_preview_window:         QCamera2HardwareInterface::set_preview_window,
+    set_callbacks:              QCamera2HardwareInterface::set_CallBacks,
+    enable_msg_type:            QCamera2HardwareInterface::enable_msg_type,
+    disable_msg_type:           QCamera2HardwareInterface::disable_msg_type,
+    msg_type_enabled:           QCamera2HardwareInterface::msg_type_enabled,
 
-    .start_preview =             QCamera2HardwareInterface::start_preview,
-    .stop_preview =              QCamera2HardwareInterface::stop_preview,
-    .preview_enabled =           QCamera2HardwareInterface::preview_enabled,
-    .store_meta_data_in_buffers = QCamera2HardwareInterface::store_meta_data_in_buffers,
+    start_preview:              QCamera2HardwareInterface::start_preview,
+    stop_preview:               QCamera2HardwareInterface::stop_preview,
+    preview_enabled:            QCamera2HardwareInterface::preview_enabled,
+    store_meta_data_in_buffers: QCamera2HardwareInterface::store_meta_data_in_buffers,
 
-    .start_recording =           QCamera2HardwareInterface::start_recording,
-    .stop_recording =            QCamera2HardwareInterface::stop_recording,
-    .recording_enabled =         QCamera2HardwareInterface::recording_enabled,
-    .release_recording_frame =   QCamera2HardwareInterface::release_recording_frame,
+    start_recording:            QCamera2HardwareInterface::start_recording,
+    stop_recording:             QCamera2HardwareInterface::stop_recording,
+    recording_enabled:          QCamera2HardwareInterface::recording_enabled,
+    release_recording_frame:    QCamera2HardwareInterface::release_recording_frame,
 
-    .auto_focus =                QCamera2HardwareInterface::auto_focus,
-    .cancel_auto_focus =         QCamera2HardwareInterface::cancel_auto_focus,
+    auto_focus:                 QCamera2HardwareInterface::auto_focus,
+    cancel_auto_focus:          QCamera2HardwareInterface::cancel_auto_focus,
 
-    .take_picture =              QCamera2HardwareInterface::take_picture,
-    .cancel_picture =            QCamera2HardwareInterface::cancel_picture,
+    take_picture:               QCamera2HardwareInterface::take_picture,
+    cancel_picture:             QCamera2HardwareInterface::cancel_picture,
 
-    .set_parameters =            QCamera2HardwareInterface::set_parameters,
-    .get_parameters =            QCamera2HardwareInterface::get_parameters,
-    .put_parameters =            QCamera2HardwareInterface::put_parameters,
-    .send_command =              QCamera2HardwareInterface::send_command,
+    set_parameters:             QCamera2HardwareInterface::set_parameters,
+    get_parameters:             QCamera2HardwareInterface::get_parameters,
+    put_parameters:             QCamera2HardwareInterface::put_parameters,
+    send_command:               QCamera2HardwareInterface::send_command,
 
-    .release =                   QCamera2HardwareInterface::release,
-    .dump =                      QCamera2HardwareInterface::dump,
+    release:                    QCamera2HardwareInterface::release,
+    dump:                       QCamera2HardwareInterface::dump,
 };
 
 /*===========================================================================
@@ -2027,7 +2028,7 @@ QCameraHeapMemory *QCamera2HardwareInterface::allocateStreamInfoBuf(
             mParameters.getHfrFps(pFpsRange);
             streamInfo->user_buf_info.frameInterval =
                     (long)((1000/pFpsRange.video_max_fps) * 1000);
-            CDBG_HIGH("%s: Video Batch Count = %d, interval = %ld", __func__,
+            CDBG_HIGH("%s: Video Batch Count = %d, interval = %d", __func__,
                     streamInfo->user_buf_info.frame_buf_cnt,
                     streamInfo->user_buf_info.frameInterval);
         }
@@ -2110,6 +2111,7 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamUserBuf(
 {
     int rc = NO_ERROR;
     QCameraMemory *mem = NULL;
+    int bufferCnt = 0;
     int size = 0;
 
     if (streamInfo->streaming_mode != CAM_STREAMING_MODE_BATCH) {
@@ -7360,27 +7362,17 @@ QCameraExif *QCamera2HardwareInterface::getExifData()
         ALOGE("%s: getExifGpsDataTimeStamp failed", __func__);
     }
 
-    char value[PROPERTY_VALUE_MAX];
-    if (property_get("ro.product.manufacturer", value, "QCOM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_MAKE, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifMaker failed", __func__);
-    }
+    const char *value = "Nextbit";
+    exif->addEntry(EXIFTAGID_MAKE, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
-    if (property_get("ro.product.model", value, "QCAM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_MODEL, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifModel failed", __func__);
-    }
+    value = "Robin";
+    exif->addEntry(EXIFTAGID_MODEL, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
-    if (property_get("ro.build.description", value, "QCAM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_SOFTWARE, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifSoftware failed", __func__);
-    }
+    value = "ether-user 7.1.1 Robin_Nougat_108 00WW_Jenkins_108 release-keys";
+    exif->addEntry(EXIFTAGID_SOFTWARE, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
     if (mParameters.useJpegExifRotation()) {
         int16_t orientation;
@@ -7817,6 +7809,7 @@ void QCameraPerfLock::lock_init()
 {
     const char *rc;
     char value[PROPERTY_VALUE_MAX];
+    int len;
     property_get("persist.camera.perflock.enable", value, "0");
     mPerfLockEnable = atoi(value);
     if (mPerfLockEnable) {

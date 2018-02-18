@@ -51,6 +51,8 @@ using namespace android;
 namespace qcamera {
 static const char ExifAsciiPrefix[] =
     { 0x41, 0x53, 0x43, 0x49, 0x49, 0x0, 0x0, 0x0 };          // "ASCII\0\0\0"
+static const char ExifUndefinedPrefix[] =
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };   // "\0\0\0\0\0\0\0\0"
 
 #define EXIF_ASCII_PREFIX_SIZE           8   //(sizeof(ExifAsciiPrefix))
 #define FOCAL_LENGTH_DECIMAL_PRECISION   100
@@ -478,7 +480,7 @@ void QCamera3Channel::dumpYUV(mm_camera_buf_def_t *frame, cam_dimension_t dim,
     int file_fd = open(buf, O_RDWR | O_CREAT, 0644);
     if (file_fd >= 0) {
         ssize_t written_len = write(file_fd, frame->buffer, offset.frame_len);
-        ALOGE("%s: written number of bytes %ld", __func__, written_len);
+        ALOGE("%s: written number of bytes %d", __func__, written_len);
         close(file_fd);
     } else {
         ALOGE("%s: failed to open file to dump image", __func__);
@@ -1045,7 +1047,7 @@ void QCamera3RawChannel::dumpRawSnapshot(mm_camera_buf_def_t *frame)
        int file_fd = open(buf, O_RDWR| O_CREAT, 0644);
        if (file_fd >= 0) {
           ssize_t written_len = write(file_fd, frame->buffer, frame->frame_len);
-          ALOGE("%s: written number of bytes %ld", __func__, written_len);
+          ALOGE("%s: written number of bytes %zd", __func__, written_len);
           close(file_fd);
        } else {
           ALOGE("%s: failed to open file to dump image", __func__);
@@ -1242,7 +1244,7 @@ void QCamera3RawDumpChannel::dumpRawSnapshot(mm_camera_buf_def_t *frame)
             if (file_fd >= 0) {
                 ssize_t written_len =
                         write(file_fd, frame->buffer, offset.frame_len);
-                CDBG("%s: written number of bytes %ld", __func__, written_len);
+                CDBG("%s: written number of bytes %zd", __func__, written_len);
                 close(file_fd);
             } else {
                 ALOGE("%s: failed to open file to dump image", __func__);
@@ -1269,7 +1271,7 @@ void QCamera3RawDumpChannel::dumpRawSnapshot(mm_camera_buf_def_t *frame)
  * RETURN          : NA
  *==========================================================================*/
 void QCamera3RawDumpChannel::streamCbRoutine(mm_camera_super_buf_t *super_frame,
-                                                QCamera3Stream* /*stream*/)
+                                                QCamera3Stream *stream)
 {
     CDBG("%s: E",__func__);
     if (super_frame == NULL || super_frame->num_bufs != 1) {
@@ -2325,7 +2327,7 @@ int32_t getExifLatitude(rat_t *latitude,
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", value);
-    if(strlen(str) != 0) {
+    if(str != NULL) {
         parseGPSCoordinate(str, latitude);
 
         //set Latitude Ref
@@ -2360,7 +2362,7 @@ int32_t getExifLongitude(rat_t *longitude,
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", value);
-    if(strlen(str) != 0) {
+    if(str != NULL) {
         parseGPSCoordinate(str, longitude);
 
         //set Longitude Ref
@@ -2395,7 +2397,7 @@ int32_t getExifAltitude(rat_t *altitude, char *altRef, double argValue)
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", argValue);
-    if (strlen(str) != 0) {
+    if (str != NULL) {
         double value = atof(str);
         *altRef = 0;
         if(value < 0){
@@ -2428,7 +2430,7 @@ int32_t getExifGpsDateTimeStamp(char *gpsDateStamp,
 {
     char str[30];
     snprintf(str, sizeof(str), "%lld", (long long int)value);
-    if(strlen(str) != 0) {
+    if(str != NULL) {
         time_t unixTime = (time_t)atol(str);
         struct tm *UTCTimestamp = gmtime(&unixTime);
         if (UTCTimestamp != NULL) {
@@ -2646,27 +2648,17 @@ QCamera3Exif *QCamera3PicChannel::getExifData(metadata_buffer_t *metadata,
         ALOGE("%s: no metadata provided ", __func__);
     }
 
-    char value[PROPERTY_VALUE_MAX];
-    if (property_get("ro.product.manufacturer", value, "QCOM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_MAKE, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifMaker failed", __func__);
-    }
+    const char *value = "Nextbit";
+    exif->addEntry(EXIFTAGID_MAKE, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
-    if (property_get("ro.product.model", value, "QCAM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_MODEL, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifModel failed", __func__);
-    }
+    value = "Robin";
+    exif->addEntry(EXIFTAGID_MODEL, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
-    if (property_get("ro.build.description", value, "QCAM-AA") > 0) {
-        exif->addEntry(EXIFTAGID_SOFTWARE, EXIF_ASCII,
-                (uint32_t)(strlen(value) + 1), (void *)value);
-    } else {
-        ALOGE("%s: getExifSoftware failed", __func__);
-    }
+    value = "ether-user 7.1.1 Robin_Nougat_108 00WW_Jenkins_108 release-keys";
+    exif->addEntry(EXIFTAGID_SOFTWARE, EXIF_ASCII,
+            (uint32_t)(strlen(value) + 1), (void *)value);
 
     return exif;
 }
