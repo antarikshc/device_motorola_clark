@@ -43,10 +43,10 @@ ro.bluetooth.emb_wp_mode=true
 ro.qualcomm.cabl=0
 
 # Camera
-persist.camera.HAL3.enabled=0
 persist.camera.tnr.video=on
 persist.camera.tnr.preview=on
 ro.qc.sdk.camera.facialproc=false
+camera.disable_treble=true
 
 # Coresight
 persist.debug.coresight.config=stm-events
