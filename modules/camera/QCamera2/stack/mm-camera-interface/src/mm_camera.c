@@ -299,7 +299,6 @@ int32_t mm_camera_open(mm_camera_obj_t *my_obj)
                     ALOGE("%s: Failed to open %s: %s(%d).", __func__, dev_name,
                             strerror(-errno), errno);
             }
-            break;
         }
         ALOGE("%s:Failed with %s error, retrying after %d milli-seconds",
              __func__, strerror(errno), sleep_msec);

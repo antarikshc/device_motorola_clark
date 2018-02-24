@@ -1237,8 +1237,11 @@ int QCamera2HardwareInterface::openCamera()
     }
     rc = camera_open((uint8_t)mCameraId, &mCameraHandle);
     if (rc) {
-        ALOGE("camera_open failed. rc = %d, mCameraHandle = %p", rc, mCameraHandle);
-        return rc;
+        rc = camera_open((uint8_t)mCameraId, &mCameraHandle);
+        if (rc) {
+            ALOGE("camera_open failed. rc = %d, mCameraHandle = %p", rc, mCameraHandle);
+            return rc;
+        }
     }
     if (NULL == gCamCaps[mCameraId])
         initCapabilities(mCameraId,mCameraHandle);
