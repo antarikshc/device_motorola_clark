@@ -72,6 +72,10 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
     camera.device@1.0-impl
 
+# Camera Metadata printer
+PRODUCT_PACKAGES += \
+    get_offsets
+
 # CMActions
 PRODUCT_PACKAGES += \
     CMActions \
