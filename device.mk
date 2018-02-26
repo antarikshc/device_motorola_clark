@@ -73,6 +73,9 @@ PRODUCT_PACKAGES += \
     Snap \
     mm-qcamera-app
 
+# Camera Metadata printer
+PRODUCT_PACKAGES += \
+    get_offsets
 
 # CMActions
 PRODUCT_PACKAGES += \
