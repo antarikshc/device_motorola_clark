@@ -65,6 +65,86 @@ int main() {
 
     /* INCLUDE() macros from metadata_data_t go after this */
 
+/* common between HAL1 and HAL3 */
+    PRINT(CAM_INTF_META_HISTOGRAM,                    pMetadata);
+    PRINT(CAM_INTF_META_FACE_DETECTION,               pMetadata);
+    PRINT(CAM_INTF_META_AUTOFOCUS_DATA,               pMetadata);
+    PRINT(CAM_INTF_PARM_UPDATE_DEBUG_LEVEL,           pMetadata);
+
+    /* Specific to HAl1 */
+    PRINT(CAM_INTF_META_CROP_DATA,                    pMetadata);
+    PRINT(CAM_INTF_META_PREP_SNAPSHOT_DONE,           pMetadata);
+    PRINT(CAM_INTF_META_GOOD_FRAME_IDX_RANGE,         pMetadata);
+    PRINT(CAM_INTF_META_ASD_HDR_SCENE_DATA,           pMetadata);
+    PRINT(CAM_INTF_META_ASD_SCENE_TYPE,               pMetadata);
+    PRINT(CAM_INTF_META_CURRENT_SCENE,                pMetadata);
+    PRINT(CAM_INTF_META_AWB_INFO,                     pMetadata);
+    PRINT(CAM_INTF_META_FOCUS_POSITION,               pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_ISP,           pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_PP,            pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_AE,            pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_AWB,           pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_AF,            pMetadata);
+    PRINT(CAM_INTF_META_CHROMATIX_LITE_ASD,           pMetadata);
+    PRINT(CAM_INTF_BUF_DIVERT_INFO,                   pMetadata);
+
+    /* Specific to HAL3 */
+    PRINT(CAM_INTF_META_FRAME_NUMBER_VALID,           pMetadata);
+    PRINT(CAM_INTF_META_URGENT_FRAME_NUMBER_VALID,    pMetadata);
+    PRINT(CAM_INTF_META_FRAME_DROPPED,                pMetadata);
+    PRINT(CAM_INTF_META_FRAME_NUMBER,                 pMetadata);
+    PRINT(CAM_INTF_META_URGENT_FRAME_NUMBER,          pMetadata);
+    PRINT(CAM_INTF_META_COLOR_CORRECT_MODE,           pMetadata);
+    PRINT(CAM_INTF_META_COLOR_CORRECT_TRANSFORM,      pMetadata);
+    PRINT(CAM_INTF_META_COLOR_CORRECT_GAINS,          pMetadata);
+    PRINT(CAM_INTF_META_PRED_COLOR_CORRECT_TRANSFORM, pMetadata);
+    PRINT(CAM_INTF_META_PRED_COLOR_CORRECT_GAINS,     pMetadata);
+    PRINT(CAM_INTF_META_AEC_ROI,                      pMetadata);
+    PRINT(CAM_INTF_META_AEC_STATE,                    pMetadata);
+    PRINT(CAM_INTF_PARM_FOCUS_MODE,                   pMetadata);
+    PRINT(CAM_INTF_PARM_MANUAL_FOCUS_POS,             pMetadata);
+    PRINT(CAM_INTF_META_AF_ROI,                       pMetadata);
+    PRINT(CAM_INTF_META_AF_STATE,                     pMetadata);
+    PRINT(CAM_INTF_PARM_WHITE_BALANCE,                pMetadata);
+    PRINT(CAM_INTF_META_AWB_REGIONS,                  pMetadata);
+    PRINT(CAM_INTF_META_AWB_STATE,                    pMetadata);
+    PRINT(CAM_INTF_META_BLACK_LEVEL_LOCK,             pMetadata);
+    PRINT(CAM_INTF_META_MODE,                         pMetadata);
+    PRINT(CAM_INTF_META_EDGE_MODE,                    pMetadata);
+    PRINT(CAM_INTF_META_FLASH_POWER,                  pMetadata);
+    PRINT(CAM_INTF_META_FLASH_FIRING_TIME,            pMetadata);
+    PRINT(CAM_INTF_META_FLASH_MODE,                   pMetadata);
+    PRINT(CAM_INTF_META_FLASH_STATE,                  pMetadata);
+    PRINT(CAM_INTF_META_HOTPIXEL_MODE,                pMetadata);
+    PRINT(CAM_INTF_META_LENS_APERTURE,                pMetadata);
+    PRINT(CAM_INTF_META_LENS_FILTERDENSITY,           pMetadata);
+    PRINT(CAM_INTF_META_LENS_FOCAL_LENGTH,            pMetadata);
+    PRINT(CAM_INTF_META_LENS_FOCUS_DISTANCE,          pMetadata);
+    PRINT(CAM_INTF_META_LENS_FOCUS_RANGE,             pMetadata);
+    PRINT(CAM_INTF_META_LENS_STATE,                   pMetadata);
+    PRINT(CAM_INTF_META_LENS_OPT_STAB_MODE,           pMetadata);
+//    PRINT(CAM_INTF_META_LENS_FOCUS_STATE,             pMetadata); //NOT FOUND
+    PRINT(CAM_INTF_META_NOISE_REDUCTION_MODE,         pMetadata);
+    PRINT(CAM_INTF_META_NOISE_REDUCTION_STRENGTH,     pMetadata);
+    PRINT(CAM_INTF_META_SCALER_CROP_REGION,           pMetadata);
+    PRINT(CAM_INTF_META_SCENE_FLICKER,                pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_EXPOSURE_TIME,         pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_FRAME_DURATION,        pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_SENSITIVITY,           pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_TIMESTAMP,             pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_ROLLING_SHUTTER_SKEW,  pMetadata);
+    PRINT(CAM_INTF_META_SHADING_MODE,                 pMetadata);
+    PRINT(CAM_INTF_META_STATS_FACEDETECT_MODE,        pMetadata);
+    PRINT(CAM_INTF_META_STATS_HISTOGRAM_MODE,         pMetadata);
+    PRINT(CAM_INTF_META_STATS_SHARPNESS_MAP_MODE,     pMetadata);
+    PRINT(CAM_INTF_META_STATS_SHARPNESS_MAP,          pMetadata);
+    PRINT(CAM_INTF_META_TONEMAP_CURVES,               pMetadata);
+    PRINT(CAM_INTF_META_LENS_SHADING_MAP,             pMetadata);
+    PRINT(CAM_INTF_META_AEC_INFO,                     pMetadata);
+    PRINT(CAM_INTF_META_SENSOR_INFO,                  pMetadata);
+    PRINT(CAM_INTF_META_EXIF_DEBUG_AE,                pMetadata);
+    PRINT(CAM_INTF_META_EXIF_DEBUG_AWB,               pMetadata);
+
     dlclose(handle);
     return 0;
 }
