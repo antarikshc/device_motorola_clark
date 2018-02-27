@@ -10692,6 +10692,7 @@ int32_t QCameraReprocScaleParam::setScaleSizeTbl(size_t scale_cnt,
 
     //get the total picture size table
     mTotalSizeTblCnt = mNeedScaleCnt + org_cnt;
+    CDBG("Total Size Table Count: %zu", mTotalSizeTblCnt);
 
     if (mNeedScaleCnt > MAX_SCALE_SIZES_CNT) {
         ALOGE("%s: Error!! mNeedScaleCnt (%d) is more than MAX_SCALE_SIZES_CNT",

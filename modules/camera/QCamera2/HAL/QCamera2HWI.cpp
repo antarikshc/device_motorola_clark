@@ -1231,38 +1231,47 @@ int QCamera2HardwareInterface::openCamera()
     size_t i;
     int32_t rc = 0;
 
+    ALOGI("anx log init");
     if (mCameraHandle) {
         ALOGE("Failure: Camera already opened");
         return ALREADY_EXISTS;
     }
+    ALOGI("anx log 2");
     rc = camera_open((uint8_t)mCameraId, &mCameraHandle);
+    ALOGI("anx log first open try");
     if (rc) {
         rc = camera_open((uint8_t)mCameraId, &mCameraHandle);
+        ALOGI("anx log second open succeed");
         if (rc) {
             ALOGE("camera_open failed. rc = %d, mCameraHandle = %p", rc, mCameraHandle);
             return rc;
         }
     }
+    ALOGI("anx log 5");
     if (NULL == gCamCaps[mCameraId])
         initCapabilities(mCameraId,mCameraHandle);
 
+    ALOGI("anx log notify");
     mCameraHandle->ops->register_event_notify(mCameraHandle->camera_handle,
                                               camEvtHandle,
                                               (void *) this);
 
     /* get max pic size for jpeg work buf calculation*/
+    ALOGI("anx log get pic size");
     for(i = 0; i < gCamCaps[mCameraId]->picture_sizes_tbl_cnt - 1; i++)
     {
       l_curr_width = gCamCaps[mCameraId]->picture_sizes_tbl[i].width;
       l_curr_height = gCamCaps[mCameraId]->picture_sizes_tbl[i].height;
+      ALOGI("anx log getting size, inside for loop");
 
       if ((l_curr_width * l_curr_height) >
         (m_max_pic_width * m_max_pic_height)) {
+        ALOGI("anx log setting max size width = %d height = %d", l_curr_width, l_curr_height);
         m_max_pic_width = l_curr_width;
         m_max_pic_height = l_curr_height;
       }
     }
-
+    ALOGI("anx log init jpeg event handle");
     rc = m_postprocessor.init(jpegEvtHandle, this);
     if (rc != 0) {
         ALOGE("Init Postprocessor failed");
@@ -1272,22 +1281,30 @@ int QCamera2HardwareInterface::openCamera()
     }
 
     // update padding info from jpeg
+    ALOGI("anx log update padding info");
     cam_padding_info_t padding_info;
     m_postprocessor.getJpegPaddingReq(padding_info);
+    ALOGI("anx log request padding info");
     if (gCamCaps[mCameraId]->padding_info.width_padding < padding_info.width_padding) {
         gCamCaps[mCameraId]->padding_info.width_padding = padding_info.width_padding;
+        ALOGI("anx log padding width");
     }
     if (gCamCaps[mCameraId]->padding_info.height_padding < padding_info.height_padding) {
         gCamCaps[mCameraId]->padding_info.height_padding = padding_info.height_padding;
+        ALOGI("anx log padding height");
     }
     if (gCamCaps[mCameraId]->padding_info.plane_padding < padding_info.plane_padding) {
         gCamCaps[mCameraId]->padding_info.plane_padding = padding_info.plane_padding;
+        ALOGI("anx log padding plane");
     }
 
+    ALOGI("anx log init mParameters");
     mParameters.init(gCamCaps[mCameraId], mCameraHandle, this);
+    ALOGI("anx log minimum pp mastk");
     mParameters.setMinPpMask(gCamCaps[mCameraId]->min_required_pp_mask);
 
     mCameraOpened = true;
+    ALOGI("anx log opened xD");
 
     return NO_ERROR;
 }
