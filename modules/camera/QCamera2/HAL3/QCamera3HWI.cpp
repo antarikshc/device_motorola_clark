@@ -1352,7 +1352,7 @@ void QCamera3HardwareInterface::updateFpsInPreviewBuffer(metadata_buffer_t *meta
  *
  * RETURN     : None
  *
- *==========================================================================*/
+ *==========================================================================
 void QCamera3HardwareInterface::updateTimeStampInPendingBuffers(
         uint32_t frameNumber, nsecs_t timestamp)
 {
@@ -1371,7 +1371,7 @@ void QCamera3HardwareInterface::updateTimeStampInPendingBuffers(
     return;
 }
 #endif
-
+*/
 /*===========================================================================
  * FUNCTION   : configureStreams
  *
@@ -3140,7 +3140,7 @@ void QCamera3HardwareInterface::handleMetadataWithLock(
             /* Set the timestamp in display metadata so that clients aware of
                private_handle such as VT can use this un-modified timestamps.
                Camera framework is unaware of this timestamp and cannot change this */
-            updateTimeStampInPendingBuffers(i->frame_number, i->timestamp);
+//            updateTimeStampInPendingBuffers(i->frame_number, i->timestamp);
 #endif
 
             // Find channel requiring metadata, meaning internal offline postprocess

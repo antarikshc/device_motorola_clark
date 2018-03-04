@@ -1858,11 +1858,13 @@ int QCamera2HardwareInterface::openCamera()
     int32_t rc = NO_ERROR;
     char value[PROPERTY_VALUE_MAX];
 
+    LOGI("anx log 1");
     if (mCameraHandle) {
         LOGE("Failure: Camera already opened");
         return ALREADY_EXISTS;
     }
 
+    LOGI("anx log 2");
     rc = QCameraFlash::getInstance().reserveFlashForCamera(mCameraId);
     if (rc < 0) {
         LOGE("Failed to reserve flash for camera id: %d",
@@ -1870,6 +1872,7 @@ int QCamera2HardwareInterface::openCamera()
         return UNKNOWN_ERROR;
     }
 
+    LOGI("anx log 3");
     // alloc param buffer
     DeferWorkArgs args;
     memset(&args, 0, sizeof(args));
@@ -1879,6 +1882,7 @@ int QCamera2HardwareInterface::openCamera()
         return -ENOMEM;
     }
 
+    LOGI("anx log 4");
     if (gCamCapability[mCameraId] != NULL) {
         // allocate metadata buffers
         DeferWorkArgs args;
@@ -1901,6 +1905,7 @@ int QCamera2HardwareInterface::openCamera()
             goto error_exit1;
         }
 
+        LOGI("anx log 5");
         rc = camera_open((uint8_t)mCameraId, &mCameraHandle);
         if (rc) {
             LOGE("camera_open failed. rc = %d, mCameraHandle = %p",
@@ -1908,6 +1913,7 @@ int QCamera2HardwareInterface::openCamera()
             goto error_exit2;
         }
 
+        LOGI("anx log 6");
         mCameraHandle->ops->register_event_notify(mCameraHandle->camera_handle,
                 camEvtHandle,
                 (void *) this);
@@ -1921,12 +1927,14 @@ int QCamera2HardwareInterface::openCamera()
             goto error_exit2;
         }
 
+        LOGI("anx log 7");
         if(NO_ERROR != initCapabilities(mCameraId,mCameraHandle)) {
             LOGE("initCapabilities failed.");
             rc = UNKNOWN_ERROR;
             goto error_exit3;
         }
 
+        LOGI("anx log 8");
         mCameraHandle->ops->register_event_notify(mCameraHandle->camera_handle,
                 camEvtHandle,
                 (void *) this);
@@ -1939,6 +1947,7 @@ int QCamera2HardwareInterface::openCamera()
     // 2. However, it is not safe to begin param init until after camera is
     // open. That is why we wait until after camera open completes to schedule
     // this task.
+    LOGI("anx log 9");
     memset(&args, 0, sizeof(args));
     mParamInitJob = queueDeferredWork(CMD_DEF_PARAM_INIT, args);
     if (mParamInitJob == 0) {
@@ -1947,6 +1956,7 @@ int QCamera2HardwareInterface::openCamera()
         goto error_exit3;
     }
 
+    LOGI("anx log 10");
     mCameraOpened = true;
 
     //Notify display HAL that a camera session is active.
@@ -1965,6 +1975,7 @@ int QCamera2HardwareInterface::openCamera()
         pthread_mutex_unlock(&gCamLock);
     }
 
+    LOGI("anx log 11");
     // Setprop to decide the time source (whether boottime or monotonic).
     // By default, use monotonic time.
     property_get("persist.camera.time.monotonic", value, "1");
@@ -1982,6 +1993,7 @@ int QCamera2HardwareInterface::openCamera()
     }
     LOGH("mBootToMonoTimestampOffset = %lld", mBootToMonoTimestampOffset);
 
+    LOGI("anx log 12");
     memset(value, 0, sizeof(value));
     property_get("persist.camera.depth.focus.cb", value, "1");
     bDepthAFCallbacks = atoi(value);
@@ -1989,6 +2001,7 @@ int QCamera2HardwareInterface::openCamera()
         &sessionId[mCameraId]);
     return NO_ERROR;
 
+    LOGI("anx log 13");
 error_exit3:
     if(mJpegClientHandle) {
         deinitJpegHandle();
