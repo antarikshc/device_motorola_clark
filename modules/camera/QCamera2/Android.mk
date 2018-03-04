@@ -114,7 +114,7 @@ LOCAL_C_INCLUDES += \
         hardware/qcom/display/libqservice
 LOCAL_SHARED_LIBRARIES := liblog libhardware libutils libcutils libdl libsync
 LOCAL_SHARED_LIBRARIES += libmmcamera_interface libmmjpeg_interface libui libcamera_metadata
-LOCAL_SHARED_LIBRARIES += libqdMetaData libqservice libbinder
+LOCAL_SHARED_LIBRARIES += libqdMetaData libqservice libbinder libstagefrighthw
 LOCAL_SHARED_LIBRARIES += libcutils libdl
 LOCAL_SHARED_LIBRARIES += android.hidl.token@1.0-utils android.hardware.graphics.bufferqueue@1.0
 ifeq ($(TARGET_TS_MAKEUP),true)
