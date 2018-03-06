@@ -62,6 +62,7 @@ private:
                 struct hw_device_t **hw_device);
     static int openLegacy(
             int32_t cameraId, uint32_t halVersion, struct hw_device_t** hw_device);
+    bool can_talk_to_sensormanager();
 
 public:
     static struct hw_module_methods_t mModuleMethods;
@@ -70,6 +71,7 @@ private:
     int mNumOfCameras;
     hal_desc *mHalDescriptors;
     const camera_module_callbacks_t *mCallbacks;
+    android::Mutex gCameraWrapperLock;
 };
 
 }; /*namespace qcamera*/
