@@ -33,6 +33,9 @@
 #include <hardware/camera.h>
 #include <system/camera.h>
 #include <hardware/camera3.h>
+#include <utils/threads.h>
+
+using namespace android;
 
 namespace qcamera {
 
