@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2016, The Linux Foundataion. All rights reserved.
+CAM_FOCUS_MODE_AUTO/* Copyright (c) 2012-2016, The Linux Foundataion. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -1428,6 +1428,87 @@ int QCamera2HardwareInterface::closeCamera()
 #define DATA_PTR(MEM_OBJ,INDEX) MEM_OBJ->getPtr( INDEX )
 
 /*===========================================================================
+ * Hardcoding sizes in attempt to make camera work
+ *==========================================================================*/
+
+//For back camera cam0
+
+#define CAM0_PIC_TBL_SIZE 17
+static cam_dimension_t pic_sizes_cam0[CAM0_PIC_TBL_SIZE] = {
+    {5344, 4008},
+    {5344, 3006},
+    {4160, 3120},
+    {4320, 2432},
+    {4160, 2430},
+    {3840, 2160},
+    {3264, 2448},
+    {3264, 1836},
+    {2592, 1944},
+    {2592, 1458},
+    {1920, 1080},
+    {1440, 1080},
+    {1280, 960},
+    {1280, 720},
+    {640, 480},
+    {352, 288},
+    {320, 240}
+};
+
+#define SCALE_PIC_TBL_SIZE 8
+static cam_dimension_t scale_pic_sizes[SCALE_PIC_TBL_SIZE] = {
+    {1440, 1080},
+    {1280, 720},
+    {960, 720},
+    {720, 480},
+    {768, 432},
+    {640, 480},
+    {320, 240},
+    {176, 144}
+};
+
+#define CAM0_VID_TBL_SIZE 5
+static cam_dimension_t vid_sizes_cam0[CAM0_VID_TBL_SIZE] = {
+    {3840, 2160},
+    {1920, 1080},
+    {1280, 720},
+    {720, 480},
+    {320, 240}
+};
+
+#define CAM0_PRVW_TBL_SIZE 9
+static cam_dimension_t prvw_sizes_cam0[CAM0_PRVW_TBL_SIZE] = {
+    {1920, 1080},
+    {1440, 1080},
+    {1280, 720},
+    {960, 720},
+    {768, 432},
+    {720, 480},
+    {640, 480},
+    {320, 240},
+    {176, 144}
+};
+
+#define FOCUS_MODE_SIZE 5
+static cam_focus_mode_type focus_modes[FOCUS_MODE_SIZE] = {
+    CAM_FOCUS_MODE_AUTO,
+    CAM_FOCUS_MODE_INFINITY,
+    CAM_FOCUS_MODE_CONTINOUS_VIDEO,
+    CAM_FOCUS_MODE_CONTINOUS_PICTURE,
+    CAM_FOCUS_MODE_MAX
+};
+
+//FPS ranges
+
+#define FPS_RANGES_SIZE 5
+static cam_fps_range_t fps_ranges_sizes[FPS_RANGES_SIZE] = {
+    {15,15,15,15},
+    {15,20,15,20},
+    {15,30,15,30},
+    {24,30,24,30},
+    {30,30,30,30}
+};
+
+/*===========================================================================
  * FUNCTION   : initCapabilities
  *
  * DESCRIPTION: initialize camera capabilities in static data struct
@@ -1445,6 +1526,7 @@ int QCamera2HardwareInterface::initCapabilities(uint32_t cameraId,
     ATRACE_CALL();
     int rc = NO_ERROR;
     QCameraHeapMemory *capabilityHeap = NULL;
+    size_t i, x;
 
     /* Allocate memory for capability buffer */
     capabilityHeap = new QCameraHeapMemory(QCAMERA_ION_USE_CACHE);
@@ -1478,6 +1560,36 @@ int QCamera2HardwareInterface::initCapabilities(uint32_t cameraId,
     }
     memcpy(gCamCaps[cameraId], DATA_PTR(capabilityHeap,0),
                                         sizeof(cam_capability_t));
+
+    for (i = 0; i < CAM0_PIC_TBL_SIZE; i++)
+        gCamCaps[cameraId]->picture_sizes_tbl[i] = pic_sizes_cam0[i];
+    gCamCaps[cameraId]->picture_sizes_tbl_cnt = CAM0_PIC_TBL_SIZE;
+
+/*  for (i = 0; i < SCALE_PIC_TBL_SIZE; i++)
+        gCamCaps[cameraId]->scale_picture_sizes[i] = scale_pic_sizes[i];
+    gCamCaps[cameraId]->scale_picture_sizes_cnt = SCALE_PIC_TBL_SIZE; */
+
+    for (i = 0; i < CAM0_VID_TBL_SIZE; i++)
+        gCamCaps[cameraId]->video_sizes_tbl[i] = vid_sizes_cam0[i];
+    gCamCaps[cameraId]->video_sizes_tbl_cnt = CAM0_VID_TBL_SIZE;
+
+    for (i = 0; i < CAM0_VID_TBL_SIZE; i++)
+        gCamCaps[cameraId]->livesnapshot_sizes_tbl[i] = vid_sizes_cam0[i];
+    gCamCaps[cameraId]->livesnapshot_sizes_tbl_cnt = CAM0_VID_TBL_SIZE;
+
+    for (i = 0; i < CAM0_PRVW_TBL_SIZE; i++)
+        gCamCaps[cameraId]->preview_sizes_tbl[i] = prvw_sizes_cam0[i];
+    gCamCaps[cameraId]->preview_sizes_tbl_cnt = CAM0_PRVW_TBL_SIZE;
+
+    for (i = 0; i < FPS_RANGES_SIZE; i++)
+        gCamCaps[cameraId]->fps_ranges_tbl[i] = fps_ranges_sizes[i];
+    gCamCaps[cameraId]->fps_ranges_tbl_cnt = FPS_RANGES_SIZE;
+
+    gCamCaps[cameraId]->scale_picture_sizes_cnt = 0;
+
+    for (i = 0; i < FOCUS_MODE_SIZE; i++)
+        gCamCaps[cameraId]->supported_focus_modes[i] = focus_modes[i];
+    gCamCaps[cameraId]->supported_focus_modes_cnt = FOCUS_MODE_SIZE;
 
     rc = NO_ERROR;
 

@@ -4653,6 +4653,7 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_QC_AUTO_HDR_SUPPORTED,
         (m_pCapability->auto_hdr_supported)? VALUE_TRUE : VALUE_FALSE);
     // Set supported preview sizes
+    ALOGI("anx log preview_sizes_tbl_cnt : %d", m_pCapability->preview_sizes_tbl_cnt);
     if (m_pCapability->preview_sizes_tbl_cnt > 0 &&
         m_pCapability->preview_sizes_tbl_cnt <= MAX_SIZES_CNT) {
         String8 previewSizeValues = createSizesString(
@@ -4667,6 +4668,7 @@ int32_t QCameraParameters::initDefaultParameters()
     }
 
     // Set supported video sizes
+    ALOGI("anx log video_sizes_tbl_cnt : %d", m_pCapability->video_sizes_tbl_cnt);
     if (m_pCapability->video_sizes_tbl_cnt > 0 &&
         m_pCapability->video_sizes_tbl_cnt <= MAX_SIZES_CNT) {
         String8 videoSizeValues = createSizesString(
@@ -4685,6 +4687,7 @@ int32_t QCameraParameters::initDefaultParameters()
     }
 
     // Set supported picture sizes
+    ALOGI("anx log picture_sizes_tbl_cnt : %d", m_pCapability->picture_sizes_tbl_cnt);
     if (m_pCapability->picture_sizes_tbl_cnt > 0 &&
         m_pCapability->picture_sizes_tbl_cnt <= MAX_SIZES_CNT) {
         String8 pictureSizeValues = createSizesString(
@@ -4700,6 +4703,7 @@ int32_t QCameraParameters::initDefaultParameters()
     }
 
     // Need check if scale should be enabled
+    ALOGI("anx log scale_picture_sizes_cnt : %d", m_pCapability->scale_picture_sizes_cnt);
     if (m_pCapability->scale_picture_sizes_cnt > 0 &&
         m_pCapability->scale_picture_sizes_cnt <= MAX_SCALE_SIZES_CNT){
         //get scale size, enable scaling. And re-set picture size table with scale sizes
@@ -4731,6 +4735,7 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_JPEG_THUMBNAIL_HEIGHT, THUMBNAIL_SIZES_MAP[0].height);
 
     // Set supported livesnapshot sizes
+    ALOGI("anx log livesnapshot_sizes_tbl_cnt : %d", m_pCapability->livesnapshot_sizes_tbl_cnt);
     if (m_pCapability->livesnapshot_sizes_tbl_cnt > 0 &&
         m_pCapability->livesnapshot_sizes_tbl_cnt <= MAX_SIZES_CNT) {
         String8 liveSnpashotSizeValues = createSizesString(
@@ -4783,6 +4788,7 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_JPEG_THUMBNAIL_QUALITY, 85);
 
     // Set FPS ranges
+    ALOGI("anx log fps_ranges_tbl_cnt : %d", m_pCapability->fps_ranges_tbl_cnt);
     if (m_pCapability->fps_ranges_tbl_cnt > 0 &&
         m_pCapability->fps_ranges_tbl_cnt <= MAX_SIZES_CNT) {
         int default_fps_index = 0;
@@ -4808,9 +4814,10 @@ int32_t QCameraParameters::initDefaultParameters()
         ALOGE("%s: supported fps ranges cnt is 0 or exceeds max!!!", __func__);
     }
 
+    ALOGI("anx log supported_focus_modes_cnt");
     // Set supported focus modes
     if (m_pCapability->supported_focus_modes_cnt > 0) {
-        String8 focusModeValues = createValuesString(
+	String8 focusModeValues = createValuesString(
                 m_pCapability->supported_focus_modes,
                 m_pCapability->supported_focus_modes_cnt,
                 FOCUS_MODES_MAP,
@@ -4830,6 +4837,7 @@ int32_t QCameraParameters::initDefaultParameters()
         ALOGE("%s: supported focus modes cnt is 0!!!", __func__);
     }
 
+    ALOGI("anx log max_num_focus_areas");
     // Set focus areas
     if (m_pCapability->max_num_focus_areas > MAX_ROI) {
         m_pCapability->max_num_focus_areas = MAX_ROI;
@@ -4839,6 +4847,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setFocusAreas(DEFAULT_CAMERA_AREA);
     }
 
+    ALOGI("anx log max_num_metering_areas");
     // Set metering areas
     if (m_pCapability->max_num_metering_areas > MAX_ROI) {
         m_pCapability->max_num_metering_areas = MAX_ROI;
@@ -4848,6 +4857,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setMeteringAreas(DEFAULT_CAMERA_AREA);
     }
 
+    ALOGI("anx log set focus position");
     // set focus position, we should get them from m_pCapability
     m_pCapability->min_focus_pos[CAM_MANUAL_FOCUS_MODE_INDEX] = 0;
     m_pCapability->max_focus_pos[CAM_MANUAL_FOCUS_MODE_INDEX] = 1023;
