@@ -1,4 +1,4 @@
-CAM_FOCUS_MODE_AUTO/* Copyright (c) 2012-2016, The Linux Foundataion. All rights reserved.
+/* Copyright (c) 2012-2016, The Linux Foundataion. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -1508,6 +1508,85 @@ static cam_fps_range_t fps_ranges_sizes[FPS_RANGES_SIZE] = {
     {30,30,30,30}
 };
 
+#define AUTO_EXPOSURE_TYPE_SIZE 4
+static cam_auto_exposure_mode_type auto_exposure_mode[AUTO_EXPOSURE_TYPE_SIZE] = {
+    CAM_AEC_MODE_FRAME_AVERAGE,
+    CAM_AEC_MODE_CENTER_WEIGHTED,
+    CAM_AEC_MODE_SPOT_METERING,
+    CAM_AEC_MODE_MAX
+};
+
+#define ANTIBANDING_TYPE_SIZE 5
+static cam_antibanding_mode_type antibanding_mode[ANTIBANDING_TYPE_SIZE] = {
+    CAM_ANTIBANDING_MODE_OFF,
+    CAM_ANTIBANDING_MODE_60HZ,
+    CAM_ANTIBANDING_MODE_50HZ,
+    CAM_ANTIBANDING_MODE_AUTO,
+    CAM_ANTIBANDING_MODE_MAX
+};
+
+#define EFFECT_MODE_TYPE_SIZE 13
+static cam_effect_mode_type effect_mode[EFFECT_MODE_TYPE_SIZE] = {
+    CAM_EFFECT_MODE_OFF,
+    CAM_EFFECT_MODE_MONO,
+    CAM_EFFECT_MODE_NEGATIVE,
+    CAM_EFFECT_MODE_SOLARIZE,
+    CAM_EFFECT_MODE_SEPIA,
+    CAM_EFFECT_MODE_POSTERIZE,
+    CAM_EFFECT_MODE_WHITEBOARD,
+    CAM_EFFECT_MODE_BLACKBOARD,
+    CAM_EFFECT_MODE_AQUA,
+    CAM_EFFECT_MODE_EMBOSS,
+    CAM_EFFECT_MODE_SKETCH,
+    CAM_EFFECT_MODE_NEON,
+    CAM_EFFECT_MODE_MAX
+};
+
+#define WB_MODE_TYPE_SIZE 6
+static cam_wb_mode_type wb_mode[WB_MODE_TYPE_SIZE] = {
+    CAM_WB_MODE_AUTO,
+    CAM_WB_MODE_INCANDESCENT,
+    CAM_WB_MODE_FLUORESCENT,
+    CAM_WB_MODE_DAYLIGHT,
+    CAM_WB_MODE_CLOUDY_DAYLIGHT,
+    CAM_WB_MODE_MAX
+};
+
+#define FLASH_MODE_TYPE_SIZE 5
+static cam_flash_mode_t flash_mode[FLASH_MODE_TYPE_SIZE] = {
+    CAM_FLASH_MODE_OFF,
+    CAM_FLASH_MODE_AUTO,
+    CAM_FLASH_MODE_ON,
+    CAM_FLASH_MODE_TORCH,
+    CAM_FLASH_MODE_MAX
+};
+
+#define SCENE_MODE_TYPE_SIZE 3
+static cam_scene_mode_type scene_mode[SCENE_MODE_TYPE_SIZE] = {
+    CAM_SCENE_MODE_AUTO,
+    CAM_SCENE_MODE_HDR,
+    CAM_SCENE_MODE_MAX
+};
+
+#define ISO_MODE_TYPE_SIZE 7
+static cam_iso_mode_type iso_mode[ISO_MODE_TYPE_SIZE] = {
+    CAM_ISO_MODE_AUTO,
+    CAM_ISO_MODE_100,
+    CAM_ISO_MODE_200,
+    CAM_ISO_MODE_400,
+    CAM_ISO_MODE_800,
+    CAM_ISO_MODE_1600,
+    CAM_ISO_MODE_MAX
+};
+
+#define FOCUS_ALGO_TYPE_SIZE 4
+static cam_focus_algorithm_type focus_algorithm[FOCUS_ALGO_TYPE_SIZE] = {
+    CAM_FOCUS_ALGO_AUTO,
+    CAM_FOCUS_ALGO_SPOT,
+    CAM_FOCUS_ALGO_CENTER_WEIGHTED,
+    CAM_FOCUS_ALGO_MAX
+};
+
 /*===========================================================================
  * FUNCTION   : initCapabilities
  *
@@ -1590,6 +1669,39 @@ int QCamera2HardwareInterface::initCapabilities(uint32_t cameraId,
     for (i = 0; i < FOCUS_MODE_SIZE; i++)
         gCamCaps[cameraId]->supported_focus_modes[i] = focus_modes[i];
     gCamCaps[cameraId]->supported_focus_modes_cnt = FOCUS_MODE_SIZE;
+
+    for (i = 0; i < AUTO_EXPOSURE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_aec_modes[i] = auto_exposure_mode[i];
+    gCamCaps[cameraId]->supported_aec_modes_cnt = AUTO_EXPOSURE_TYPE_SIZE;
+
+    for (i = 0; i < ANTIBANDING_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_antibandings[i] = antibanding_mode[i];
+    gCamCaps[cameraId]->supported_antibandings_cnt = ANTIBANDING_TYPE_SIZE;
+
+/*    for (i = 0; i < EFFECT_MODE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_effects[i] = effect_mode[i];
+    gCamCaps[cameraId]->supported_effects_cnt = EFFECT_MODE_TYPE_SIZE; */
+
+    for (i = 0; i < WB_MODE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_white_balances[i] = wb_mode[i];
+    gCamCaps[cameraId]->supported_white_balances_cnt = WB_MODE_TYPE_SIZE;
+
+    for (i = 0; i < FLASH_MODE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_flash_modes[i] = flash_mode[i];
+    gCamCaps[cameraId]->supported_flash_modes_cnt = FLASH_MODE_TYPE_SIZE;
+
+    for (i = 0; i < SCENE_MODE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_scene_modes[i] = scene_mode[i];
+    gCamCaps[cameraId]->supported_scene_modes_cnt = SCENE_MODE_TYPE_SIZE;
+
+    for (i = 0; i < ISO_MODE_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_iso_modes[i] = iso_mode[i];
+    gCamCaps[cameraId]->supported_iso_modes_cnt = ISO_MODE_TYPE_SIZE;
+
+    for (i = 0; i < FOCUS_ALGO_TYPE_SIZE; i++)
+        gCamCaps[cameraId]->supported_focus_algos[i] = focus_algorithm[i];
+    gCamCaps[cameraId]->supported_focus_algos_cnt = FOCUS_ALGO_TYPE_SIZE;
+
 
     rc = NO_ERROR;
 

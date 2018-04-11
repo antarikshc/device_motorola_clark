@@ -171,7 +171,11 @@ PRODUCT_PACKAGES += \
     libOmxVdecHevc \
     libOmxVenc \
     libstagefrighthw \
-    android.hardware.drm@1.0-impl
+    android.hardware.drm@1.0-impl \
+    libdivxdrmdecrypt \
+    libOmxAacEnc \
+    libOmxAmrEnc \
+    libOmxQcelp13Enc
 
 # Memory
 $(call inherit-product, frameworks/native/build/phone-xxxhdpi-3072-dalvik-heap.mk)

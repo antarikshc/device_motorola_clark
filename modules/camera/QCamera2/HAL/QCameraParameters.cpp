@@ -4817,12 +4817,8 @@ int32_t QCameraParameters::initDefaultParameters()
     ALOGI("anx log supported_focus_modes_cnt");
     // Set supported focus modes
     if (m_pCapability->supported_focus_modes_cnt > 0) {
-	String8 focusModeValues = createValuesString(
-                m_pCapability->supported_focus_modes,
-                m_pCapability->supported_focus_modes_cnt,
-                FOCUS_MODES_MAP,
-                PARAM_MAP_SIZE(FOCUS_MODES_MAP));
-        set(KEY_SUPPORTED_FOCUS_MODES, focusModeValues);
+        const char *supportedfocusMode = "auto,infinity,continuous-video,continuous-picture";
+        set(KEY_SUPPORTED_FOCUS_MODES, supportedfocusMode);
 
         // Set default focus mode and update corresponding parameter buf
         const char *focusMode = lookupNameByValue(FOCUS_MODES_MAP,
@@ -4892,6 +4888,7 @@ int32_t QCameraParameters::initDefaultParameters()
     setFloat(KEY_QC_MAX_FOCUS_POS_DIOPTER,
             m_pCapability->max_focus_pos[CAM_MANUAL_FOCUS_MODE_DIOPTER]);
 
+    ALOGI("anx log set supported manual focus modes");
     //set supported manual focus modes
     String8 manualFocusModes(VALUE_OFF);
     if (m_pCapability->supported_focus_modes_cnt > 1 &&
@@ -4903,84 +4900,80 @@ int32_t QCameraParameters::initDefaultParameters()
     }
     set(KEY_QC_SUPPORTED_MANUAL_FOCUS_MODES, manualFocusModes.string());
 
+    ALOGI("anx log set saturation");
     // Set Saturation
     set(KEY_QC_MIN_SATURATION, m_pCapability->saturation_ctrl.min_value);
     set(KEY_QC_MAX_SATURATION, m_pCapability->saturation_ctrl.max_value);
     set(KEY_QC_SATURATION_STEP, m_pCapability->saturation_ctrl.step);
     setSaturation(m_pCapability->saturation_ctrl.def_value);
 
+    ALOGI("anx log set sharpness");
     // Set Sharpness
     set(KEY_QC_MIN_SHARPNESS, m_pCapability->sharpness_ctrl.min_value);
     set(KEY_QC_MAX_SHARPNESS, m_pCapability->sharpness_ctrl.max_value);
     set(KEY_QC_SHARPNESS_STEP, m_pCapability->sharpness_ctrl.step);
     setSharpness(m_pCapability->sharpness_ctrl.def_value);
 
+    ALOGI("anx log set contrast");
     // Set Contrast
     set(KEY_QC_MIN_CONTRAST, m_pCapability->contrast_ctrl.min_value);
     set(KEY_QC_MAX_CONTRAST, m_pCapability->contrast_ctrl.max_value);
     set(KEY_QC_CONTRAST_STEP, m_pCapability->contrast_ctrl.step);
     setContrast(m_pCapability->contrast_ctrl.def_value);
 
+    ALOGI("anx log set SCE Factor");
     // Set SCE factor
     set(KEY_QC_MIN_SCE_FACTOR, m_pCapability->sce_ctrl.min_value); // -100
     set(KEY_QC_MAX_SCE_FACTOR, m_pCapability->sce_ctrl.max_value); // 100
     set(KEY_QC_SCE_FACTOR_STEP, m_pCapability->sce_ctrl.step);     // 10
     setSkinToneEnhancement(m_pCapability->sce_ctrl.def_value);     // 0
 
+    ALOGI("anx log set brightness");
     // Set Brightness
     set(KEY_QC_MIN_BRIGHTNESS, m_pCapability->brightness_ctrl.min_value); // 0
     set(KEY_QC_MAX_BRIGHTNESS, m_pCapability->brightness_ctrl.max_value); // 6
     set(KEY_QC_BRIGHTNESS_STEP, m_pCapability->brightness_ctrl.step);     // 1
     setBrightness(m_pCapability->brightness_ctrl.def_value);
 
+    ALOGI("anx log set auto exposure");
     // Set Auto exposure
-    String8 autoExposureValues = createValuesString(
-            m_pCapability->supported_aec_modes,
-            m_pCapability->supported_aec_modes_cnt,
-            AUTO_EXPOSURE_MAP,
-            PARAM_MAP_SIZE(AUTO_EXPOSURE_MAP));
-    set(KEY_QC_SUPPORTED_AUTO_EXPOSURE, autoExposureValues.string());
+    const char *autoExposureValues = "frame-average,center-weighted,spot-metering";
+    set(KEY_QC_SUPPORTED_AUTO_EXPOSURE, autoExposureValues);
     setAutoExposure(AUTO_EXPOSURE_FRAME_AVG);
 
+    ALOGI("anx log set exposure compensation");
     // Set Exposure Compensation
     set(KEY_MAX_EXPOSURE_COMPENSATION, m_pCapability->exposure_compensation_max); // 12
     set(KEY_MIN_EXPOSURE_COMPENSATION, m_pCapability->exposure_compensation_min); // -12
     setFloat(KEY_EXPOSURE_COMPENSATION_STEP, m_pCapability->exposure_compensation_step); // 1/6
     setExposureCompensation(m_pCapability->exposure_compensation_default); // 0
 
+    ALOGI("anx log set antibanding");
     // Set Antibanding
-    String8 antibandingValues = createValuesString(
-            m_pCapability->supported_antibandings,
-            m_pCapability->supported_antibandings_cnt,
-            ANTIBANDING_MODES_MAP,
-            PARAM_MAP_SIZE(ANTIBANDING_MODES_MAP));
+    const char *antibandingValues = "off,60hz,50hz,auto";
     set(KEY_SUPPORTED_ANTIBANDING, antibandingValues);
     setAntibanding(ANTIBANDING_OFF);
 
+    ALOGI("anx log set effect");
     // Set Effect
-    String8 effectValues = createValuesString(
-            m_pCapability->supported_effects,
-            m_pCapability->supported_effects_cnt,
-            EFFECT_MODES_MAP,
-            PARAM_MAP_SIZE(EFFECT_MODES_MAP));
+    const char *effectValues = "none,mono,negative,solarize,sepia,posterize,whiteboard,blackboard,aqua,emboss,sketch,neon";
     set(KEY_SUPPORTED_EFFECTS, effectValues);
     setEffect(EFFECT_NONE);
 
+    ALOGI("anx log set whitebalance");
     // Set WhiteBalance
-    String8 whitebalanceValues = createValuesString(
-            m_pCapability->supported_white_balances,
-            m_pCapability->supported_white_balances_cnt,
-            WHITE_BALANCE_MODES_MAP,
-            PARAM_MAP_SIZE(WHITE_BALANCE_MODES_MAP));
+    const char *whitebalanceValues = "auto,incandescent,fluorescent,daylight,cloudy-daylight";
     set(KEY_SUPPORTED_WHITE_BALANCE, whitebalanceValues);
     setWhiteBalance(WHITE_BALANCE_AUTO);
 
+    ALOGI("anx log set wb cct");
     // set supported wb cct, we should get them from m_pCapability
     m_pCapability->min_wb_cct = 2000;
     m_pCapability->max_wb_cct = 8000;
     set(KEY_QC_MIN_WB_CCT, m_pCapability->min_wb_cct);
     set(KEY_QC_MAX_WB_CCT, m_pCapability->max_wb_cct);
 
+    ALOGI("anx log set wb rgb");
     // set supported wb rgb gains, ideally we should get them from m_pCapability
     //but for now hardcode.
     m_pCapability->min_wb_gain = 1.0;
@@ -4988,6 +4981,7 @@ int32_t QCameraParameters::initDefaultParameters()
     setFloat(KEY_QC_MIN_WB_GAIN, m_pCapability->min_wb_gain);
     setFloat(KEY_QC_MAX_WB_GAIN, m_pCapability->max_wb_gain);
 
+    ALOGI("anx log set supported manual wb");
     //set supported manual wb modes
     String8 manualWBModes(VALUE_OFF);
     if(m_pCapability->sensor_type.sens_type != CAM_SENSOR_YUV) {
@@ -4998,61 +4992,57 @@ int32_t QCameraParameters::initDefaultParameters()
     }
     set(KEY_QC_SUPPORTED_MANUAL_WB_MODES, manualWBModes.string());
 
+    ALOGI("anx log set flash modes");
     // Set Flash mode
     if(m_pCapability->supported_flash_modes_cnt > 0) {
-       String8 flashValues = createValuesString(
-               m_pCapability->supported_flash_modes,
-               m_pCapability->supported_flash_modes_cnt,
-               FLASH_MODES_MAP,
-               PARAM_MAP_SIZE(FLASH_MODES_MAP));
+    const char *flashValues = "off,auto,on,torch";
        set(KEY_SUPPORTED_FLASH_MODES, flashValues);
        setFlash(FLASH_MODE_OFF);
     } else {
         ALOGE("%s: supported flash modes cnt is 0!!!", __func__);
     }
 
+    ALOGI("anx log set scene mode");
     // Set Scene Mode
-    String8 sceneModeValues = createValuesString(
-            m_pCapability->supported_scene_modes,
-            m_pCapability->supported_scene_modes_cnt,
-            SCENE_MODES_MAP,
-            PARAM_MAP_SIZE(SCENE_MODES_MAP));
+    const char *sceneModeValues = "auto,hdr";
     set(KEY_SUPPORTED_SCENE_MODES, sceneModeValues);
     setSceneMode(SCENE_MODE_AUTO);
 
+    ALOGI("anx log set CDS mode");
     // Set CDS Mode
     String8 cdsModeValues = createValuesStringFromMap(
             CDS_MODES_MAP,
             PARAM_MAP_SIZE(CDS_MODES_MAP));
     set(KEY_QC_SUPPORTED_CDS_MODES, cdsModeValues);
 
+    ALOGI("anx log set video CDS mode");
     // Set video CDS Mode
     String8 videoCdsModeValues = createValuesStringFromMap(
             CDS_MODES_MAP,
             PARAM_MAP_SIZE(CDS_MODES_MAP));
     set(KEY_QC_SUPPORTED_VIDEO_CDS_MODES, videoCdsModeValues);
 
+    ALOGI("anx log set TNR");
     // Set TNR Mode
     String8 tnrModeValues = createValuesStringFromMap(
             ON_OFF_MODES_MAP,
             PARAM_MAP_SIZE(ON_OFF_MODES_MAP));
     set(KEY_QC_SUPPORTED_TNR_MODES, tnrModeValues);
 
+    ALOGI("anx log set video TNR");
     // Set video TNR Mode
     String8 videoTnrModeValues = createValuesStringFromMap(
             ON_OFF_MODES_MAP,
             PARAM_MAP_SIZE(ON_OFF_MODES_MAP));
     set(KEY_QC_SUPPORTED_VIDEO_TNR_MODES, videoTnrModeValues);
 
+    ALOGI("anx log set ISO mode");
     // Set ISO Mode
-    String8 isoValues = createValuesString(
-            m_pCapability->supported_iso_modes,
-            m_pCapability->supported_iso_modes_cnt,
-            ISO_MODES_MAP,
-            PARAM_MAP_SIZE(ISO_MODES_MAP));
+    const char *isoValues = "auto,100,200,400,800,1600";
     set(KEY_QC_SUPPORTED_ISO_MODES, isoValues);
     setISOValue(ISO_AUTO);
 
+    ALOGI("anx log set exposure time");
     // Set exposure time
     String8 manualExpModes(VALUE_OFF);
     bool expTimeSupported = false;
@@ -5073,6 +5063,7 @@ int32_t QCameraParameters::initDefaultParameters()
     CDBG_HIGH("%s, Exposure time min %f ms, max %f ms", __func__,
             min_exp_time, max_exp_time);
 
+    ALOGI("anx log set ISO");
     // Set iso
     set(KEY_QC_MIN_ISO, m_pCapability->sensitivity_range.min_sensitivity);
     set(KEY_QC_MAX_ISO, m_pCapability->sensitivity_range.max_sensitivity);
@@ -5093,6 +5084,7 @@ int32_t QCameraParameters::initDefaultParameters()
     //finally set supported manual exposure modes
     set(KEY_QC_SUPPORTED_MANUAL_EXPOSURE_MODES, manualExpModes.string());
 
+    ALOGI("anx log set HFR");
     // Set HFR
     String8 hfrValues = createHfrValuesString(
             m_pCapability->hfr_tbl,
@@ -5109,15 +5101,13 @@ int32_t QCameraParameters::initDefaultParameters()
     CDBG("HFR values %s HFR Sizes = %s", hfrValues.string(), hfrSizeValues.string());
     setHighFrameRate(CAM_HFR_MODE_OFF);
 
+    ALOGI("anx log set Focus algorithms");
     // Set Focus algorithms
-    String8 focusAlgoValues = createValuesString(
-            m_pCapability->supported_focus_algos,
-            m_pCapability->supported_focus_algos_cnt,
-            FOCUS_ALGO_MAP,
-            PARAM_MAP_SIZE(FOCUS_ALGO_MAP));
+    const char *focusAlgoValues = "auto,spot,center-weighted";
     set(KEY_QC_SUPPORTED_FOCUS_ALGOS, focusAlgoValues);
     setSelectableZoneAf(FOCUS_ALGO_AUTO);
 
+    ALOGI("anx log set Zoom Ratios");
     // Set Zoom Ratios
     if (m_pCapability->zoom_supported > 0) {
         String8 zoomRatioValues = createZoomRatioValuesString(
@@ -5128,6 +5118,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setZoom(0);
     }
 
+    ALOGI("anx log set bracketing/HDR");
     // Set Bracketing/HDR
     char prop[PROPERTY_VALUE_MAX];
     memset(prop, 0, sizeof(prop));
@@ -5141,6 +5132,7 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_QC_SUPPORTED_AE_BRACKET_MODES, bracketingValues);
     setAEBracket(AE_BRACKET_OFF);
 
+    ALOGI("anx log set AF Bracketing");
     //Set AF Bracketing.
     for (size_t i = 0; i < m_pCapability->supported_focus_modes_cnt; i++) {
         if ((CAM_FOCUS_MODE_AUTO == m_pCapability->supported_focus_modes[i]) &&
@@ -5155,6 +5147,7 @@ int32_t QCameraParameters::initDefaultParameters()
          }
     }
 
+    ALOGI("anx log set Refocus");
     //Set Refocus.
     //Re-use ubifocus flag for now.
     for (size_t i = 0; i < m_pCapability->supported_focus_modes_cnt; i++) {
@@ -5169,6 +5162,7 @@ int32_t QCameraParameters::initDefaultParameters()
         }
     }
 
+    ALOGI("anx log set Chroma Flash");
     //Set Chroma Flash.
     if ((m_pCapability->supported_flash_modes_cnt > 0) &&
             (m_pCapability->qcom_supported_feature_mask &
@@ -5180,6 +5174,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setChromaFlash(CHROMA_FLASH_OFF);
     }
 
+    ALOGI("anx log set Opti Zoom");
     //Set Opti Zoom.
     if (m_pCapability->zoom_supported &&
             (m_pCapability->qcom_supported_feature_mask &
@@ -5191,6 +5186,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setOptiZoom(OPTI_ZOOM_OFF);
     }
 
+    ALOGI("anx log set HDR type");
     //Set HDR Type
     uint32_t supported_hdr_modes = m_pCapability->qcom_supported_feature_mask &
             (CAM_QCOM_FEATURE_SENSOR_HDR | CAM_QCOM_FEATURE_HDR);
@@ -5214,6 +5210,7 @@ int32_t QCameraParameters::initDefaultParameters()
         }
     }
 
+    ALOGI("anx log set HDR 1x");
     //Set HDR need 1x
     String8 hdrNeed1xValues;
     if (!m_bHDRModeSensor) {
@@ -5226,6 +5223,7 @@ int32_t QCameraParameters::initDefaultParameters()
     }
     set(KEY_QC_SUPPORTED_HDR_NEED_1X, hdrNeed1xValues);
 
+    ALOGI("anx log set True portrait");
     //Set True Portrait
     if ((m_pCapability->qcom_supported_feature_mask & CAM_QCOM_FEATURE_TRUEPORTRAIT) > 0) {
         String8 truePortraitValues = createValuesStringFromMap(
@@ -5234,6 +5232,7 @@ int32_t QCameraParameters::initDefaultParameters()
         set(KEY_QC_SUPPORTED_TRUE_PORTRAIT_MODES, truePortraitValues);
     }
 
+    ALOGI("anx log set Denoise");
     // Set Denoise
     if ((m_pCapability->qcom_supported_feature_mask & CAM_QCOM_FEATURE_DENOISE2D) > 0){
     String8 denoiseValues = createValuesStringFromMap(
@@ -5250,6 +5249,7 @@ int32_t QCameraParameters::initDefaultParameters()
     String8 enableDisableValues = createValuesStringFromMap(
             ENABLE_DISABLE_MODES_MAP, PARAM_MAP_SIZE(ENABLE_DISABLE_MODES_MAP));
 
+    ALOGI("anx log set Lens Shading");
     // Set Lens Shading
     set(KEY_QC_SUPPORTED_LENSSHADE_MODES, enableDisableValues);
     setLensShadeValue(VALUE_ENABLE);
@@ -5277,6 +5277,7 @@ int32_t QCameraParameters::initDefaultParameters()
     String8 onOffValues = createValuesStringFromMap(
             ON_OFF_MODES_MAP, PARAM_MAP_SIZE(ON_OFF_MODES_MAP));
 
+    ALOGI("anx log set See more");
     //Set See more (LLVD)
     if (m_pCapability->qcom_supported_feature_mask &
             CAM_QCOM_FEATURE_LLVD) {
@@ -5284,6 +5285,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setSeeMore(VALUE_OFF);
     }
 
+    ALOGI("anx log set still more");
     //Set Still more
     if (m_pCapability->qcom_supported_feature_mask &
             CAM_QCOM_FEATURE_STILLMORE) {
@@ -5294,6 +5296,7 @@ int32_t QCameraParameters::initDefaultParameters()
         setStillMore(STILL_MORE_OFF);
     }
 
+    ALOGI("anx log set Scene Detection");
     //Set Scene Detection
     set(KEY_QC_SUPPORTED_SCENE_DETECT, onOffValues);
     setSceneDetect(VALUE_OFF);
@@ -5366,6 +5369,7 @@ int32_t QCameraParameters::initDefaultParameters()
         set(KEY_QC_VIDEO_HDR, VALUE_OFF);
     }
 
+    ALOGI("anx log set HW Sensor Snapshot HDR");
     //Set HW Sensor Snapshot HDR
     if ((m_pCapability->qcom_supported_feature_mask & CAM_QCOM_FEATURE_SENSOR_HDR)> 0) {
         set(KEY_QC_SUPPORTED_SENSOR_HDR_MODES, onOffValues);
@@ -5382,6 +5386,7 @@ int32_t QCameraParameters::initDefaultParameters()
     set(KEY_QC_SUPPORTED_TOUCH_AF_AEC, touchValues);
     set(KEY_QC_TOUCH_AF_AEC, TOUCH_AF_AEC_OFF);
 
+    ALOGI("anx log set flip mode");
     //set flip mode
     if ((m_pCapability->qcom_supported_feature_mask & CAM_QCOM_FEATURE_FLIP) > 0) {
         String8 flipModes = createValuesStringFromMap(
