@@ -10621,7 +10621,7 @@ int32_t QCameraParameters::commitParamChanges()
  *
  * RETURN     : none
  *==========================================================================*/
-QCameraReprocScaleParam::QCameraReprocScaleParam(QCameraParameters* parent)
+QCameraReprocScaleParam::QCameraReprocScaleParam(QCameraParameters *parent)
   : mParent(parent),
     mScaleEnabled(false),
     mIsUnderScaling(false),
@@ -10631,6 +10631,8 @@ QCameraReprocScaleParam::QCameraReprocScaleParam(QCameraParameters* parent)
     mSensorSizeTbl(NULL),
     mTotalSizeTblCnt(0)
 {
+    (void)mParent;
+    (void)mScaleDirection;
     mPicSizeFromAPK.width = 0;
     mPicSizeFromAPK.height = 0;
     mPicSizeSetted.width = 0;

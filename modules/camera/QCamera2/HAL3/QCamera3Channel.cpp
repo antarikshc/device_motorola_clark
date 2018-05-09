@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2015, The Linux Foundataion. All rights reserved.
+/* Copyright (c) 2012-2018, The Linux Foundataion. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -478,7 +478,7 @@ void QCamera3Channel::dumpYUV(mm_camera_buf_def_t *frame, cam_dimension_t dim,
     int file_fd = open(buf, O_RDWR | O_CREAT, 0644);
     if (file_fd >= 0) {
         ssize_t written_len = write(file_fd, frame->buffer, offset.frame_len);
-        ALOGE("%s: written number of bytes %ld", __func__, written_len);
+        ALOGE("%s: written number of bytes %zd", __func__, written_len);
         close(file_fd);
     } else {
         ALOGE("%s: failed to open file to dump image", __func__);
@@ -1269,7 +1269,7 @@ void QCamera3RawDumpChannel::dumpRawSnapshot(mm_camera_buf_def_t *frame)
  * RETURN          : NA
  *==========================================================================*/
 void QCamera3RawDumpChannel::streamCbRoutine(mm_camera_super_buf_t *super_frame,
-                                                QCamera3Stream* stream)
+                                                QCamera3Stream* stream __unused)
 {
     CDBG("%s: E",__func__);
     if (super_frame == NULL || super_frame->num_bufs != 1) {
@@ -2325,21 +2325,19 @@ int32_t getExifLatitude(rat_t *latitude,
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", value);
-    if(strlen(str) != 0) {
-        parseGPSCoordinate(str, latitude);
+    
+    parseGPSCoordinate(str, latitude);
 
-        //set Latitude Ref
-        float latitudeValue = strtof(str, 0);
-        if(latitudeValue < 0.0f) {
-            latRef[0] = 'S';
-        } else {
-            latRef[0] = 'N';
-        }
-        latRef[1] = '\0';
-        return NO_ERROR;
-    }else{
-        return BAD_VALUE;
+    //set Latitude Ref
+    float latitudeValue = strtof(str, 0);
+    if(latitudeValue < 0.0f) {
+        latRef[0] = 'S';
+    } else {
+        latRef[0] = 'N';
     }
+    latRef[1] = '\0';
+
+    return NO_ERROR;
 }
 
 /*===========================================================================
@@ -2360,21 +2358,19 @@ int32_t getExifLongitude(rat_t *longitude,
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", value);
-    if(strlen(str) != 0) {
-        parseGPSCoordinate(str, longitude);
 
-        //set Longitude Ref
-        float longitudeValue = strtof(str, 0);
-        if(longitudeValue < 0.0f) {
-            lonRef[0] = 'W';
-        } else {
-            lonRef[0] = 'E';
-        }
-        lonRef[1] = '\0';
-        return NO_ERROR;
-    }else{
-        return BAD_VALUE;
+    parseGPSCoordinate(str, longitude);
+
+    //set Longitude Ref
+    float longitudeValue = strtof(str, 0);
+    if(longitudeValue < 0.0f) {
+        lonRef[0] = 'W';
+    } else {
+        lonRef[0] = 'E';
     }
+    lonRef[1] = '\0';
+
+    return NO_ERROR;
 }
 
 /*===========================================================================
@@ -2395,17 +2391,15 @@ int32_t getExifAltitude(rat_t *altitude, char *altRef, double argValue)
 {
     char str[30];
     snprintf(str, sizeof(str), "%f", argValue);
-    if (strlen(str) != 0) {
-        double value = atof(str);
-        *altRef = 0;
-        if(value < 0){
-            *altRef = 1;
-            value = -value;
-        }
-        return getRational(altitude, (int)(value * 1000), 1000);
-    } else {
-        return BAD_VALUE;
+
+    double value = atof(str);
+    *altRef = 0;
+    if(value < 0){
+        *altRef = 1;
+        value = -value;
     }
+
+    return getRational(altitude, (int)(value * 1000), 1000);
 }
 
 /*===========================================================================
@@ -2428,21 +2422,18 @@ int32_t getExifGpsDateTimeStamp(char *gpsDateStamp,
 {
     char str[30];
     snprintf(str, sizeof(str), "%lld", (long long int)value);
-    if(strlen(str) != 0) {
-        time_t unixTime = (time_t)atol(str);
-        struct tm *UTCTimestamp = gmtime(&unixTime);
-        if (UTCTimestamp != NULL) {
-            strftime(gpsDateStamp, bufLen, "%Y:%m:%d", UTCTimestamp);
 
-            getRational(&gpsTimeStamp[0], UTCTimestamp->tm_hour, 1);
-            getRational(&gpsTimeStamp[1], UTCTimestamp->tm_min, 1);
-            getRational(&gpsTimeStamp[2], UTCTimestamp->tm_sec, 1);
-            return NO_ERROR;
-        } else {
-            ALOGE("%s: Could not get the timestamp", __func__);
-            return BAD_VALUE;
-        }
+    time_t unixTime = (time_t)atol(str);
+    struct tm *UTCTimestamp = gmtime(&unixTime);
+    if (UTCTimestamp != NULL) {
+        strftime(gpsDateStamp, bufLen, "%Y:%m:%d", UTCTimestamp);
+
+        getRational(&gpsTimeStamp[0], UTCTimestamp->tm_hour, 1);
+        getRational(&gpsTimeStamp[1], UTCTimestamp->tm_min, 1);
+        getRational(&gpsTimeStamp[2], UTCTimestamp->tm_sec, 1);
+        return NO_ERROR;
     } else {
+        ALOGE("%s: Could not get the timestamp", __func__);
         return BAD_VALUE;
     }
 }

@@ -38,6 +38,7 @@
 #include <utils/Errors.h>
 #include <utils/Trace.h>
 #include <gralloc_priv.h>
+#include <gui/Surface.h>
 #include <dlfcn.h>
 
 #include "QCamera2HWI.h"
@@ -2099,7 +2100,6 @@ QCameraMemory *QCamera2HardwareInterface::allocateStreamUserBuf(
 {
     int rc = NO_ERROR;
     QCameraMemory *mem = NULL;
-    int bufferCnt = 0;
     int size = 0;
 
     if (streamInfo->streaming_mode != CAM_STREAMING_MODE_BATCH) {
@@ -7807,7 +7807,6 @@ void QCameraPerfLock::lock_init()
 {
     const char *rc;
     char value[PROPERTY_VALUE_MAX];
-    int len;
     property_get("persist.camera.perflock.enable", value, "0");
     mPerfLockEnable = atoi(value);
     if (mPerfLockEnable) {
