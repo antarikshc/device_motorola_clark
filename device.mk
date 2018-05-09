@@ -70,7 +70,8 @@ PRODUCT_PACKAGES += \
     libmmjpeg_interface \
     Snap \
     android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl
+    camera.device@1.0-impl \
+    camera.device@3.2-impl
 
 # Camera Metadata printer
 PRODUCT_PACKAGES += \
